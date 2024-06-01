@@ -24,14 +24,17 @@ export default async function RootLayout({
   return (
     <div
       className={cn(
-        "font-montserrat bg-darkBg w-full min-h-screen flex flex-col justify-center place-items-center",
+        "font-montserrat w-full min-h-screen flex flex-col justify-center place-items-center",
         montserrat.variable
       )}
     >
       <div className="hidden w-full min-h-screen md:flex justify-center place-items-center">
         <h1 className="text-white">Download The App</h1>
       </div>
-      <div className="md:hidden w-full min-h-screen flex flex-col justify-start place-items-center relative pb-24">
+      <div
+        className="md:hidden w-full min-h-screen flex flex-col justify-start place-items-center relative pb-24"
+        style={{ backgroundColor: "rgb(18,18,18)" }}
+      >
         {children}
         <Navbar />
       </div>

@@ -42,7 +42,7 @@ export default function page() {
 
   return (
     <div
-      className="w-full h-[100px] flex justify-center place-items-center fixed bottom-0 py-5 px-[1.25rem] border border-lightBorder rounded-t-[15px] shadow-neutral-600 z-50"
+      className="w-full h-[100px] flex justify-center place-items-center fixed bottom-0 py-5 px-[1.25rem] rounded-t-[15px] z-50"
       style={{ backgroundColor: "rgb(31,31,31)" }}
     >
       <div className="w-full h-full flex px-.8 justify-between place-items-center">

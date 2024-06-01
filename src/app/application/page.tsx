@@ -2,7 +2,6 @@
 "use client";
 
 import Image from "next/image";
-
 import type { Viewport } from "next";
 import Link from "next/link";
 import { useLocalStorage } from "@/hooks/useLocalStorage";

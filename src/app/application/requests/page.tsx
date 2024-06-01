@@ -1,139 +1,76 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { useEffect } from "react";
-import Loading from "./skeleton";
-import TransactionsContent from "./transactions-content";
-import createSupabaseBrowserClient from "@/lib/supabase/client";
-import { toast as sonner } from "sonner";
+
+import Image from "next/image";
+
+import type { Viewport } from "next";
+import Link from "next/link";
+import RequestsContent from "./requests-content";
+
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { useEffect, useState } from "react";
+import { redirect } from "next/navigation";
+import { useRequestServices } from "@/hooks/useOrderService";
 import { toast } from "@/components/ui/use-toast";
-import { useRequests } from "@/hooks/useOrders";
-import { HomeIcon } from "lucide-react";
-import { setBranchesData } from "@/redux/slices/branchesSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { useEquipments } from "@/hooks/useEquipments";
-import { useFoodSupplies } from "@/hooks/useFoodSupplies";
-import {
-  setEquipmentsData,
-  setFoodSuppliesData,
-  setVehiclesData,
-} from "@/redux/slices/orderCartOptionSlice";
-import { useVehicles } from "@/hooks/useVehicles";
+import createSupabaseBrowserClient from "@/lib/supabase/client";
 
-export default function Transactions() {
-  const dispatch = useDispatch();
+export const viewport: Viewport = {
+  themeColor: "#fff",
+};
 
-  const { getRequests, requestsData } = useRequests();
-  // const { getBranches, allBranchesData } = useBranches();
-  // const { getProducts, productsData } = useProducts();
-  const { getEquipments, equipmentsData } = useEquipments();
-  const { getFoodSupplies, allFoodSupplies } = useFoodSupplies();
-  const { getVehicles, vehiclesData } = useVehicles();
+export default function Requests() {
+  const { getItem } = useLocalStorage("value");
+  const currentUser = getItem();
 
-  // const branchesData = allBranchesData.map((branch: any) => ({
-  //   id: branch?.id,
-  //   value: branch?.branch_name,
-  //   label: branch?.branch_name,
-  //   icon: HomeIcon,
-  // }));
-
-  const foodsuppliesCart = useSelector(
-    (state: any) => state.requestCart.foodsuppliesCart
-  );
-  const equipmentsCart = useSelector(
-    (state: any) => state.requestCart.equipmentsCart
-  );
-  const vehiclesCart = useSelector(
-    (state: any) => state.requestCart.vehiclesCart
-  );
-  console.log(allFoodSupplies);
-
-  // dispatch(setBranchesData(branchesData));
-
-  dispatch(setFoodSuppliesData({ allFoodSupplies, foodsuppliesCart }));
-  dispatch(setEquipmentsData({ equipmentsData, equipmentsCart }));
-  dispatch(setVehiclesData({ vehiclesData, vehiclesCart }));
-
-  // fetch all products
+  const [error, setError] = useState(false);
+  const { getRequestServices, requestServicesData } = useRequestServices();
   useEffect(() => {
-    const { error } = getRequests();
-
-    if (error?.message) {
-      toast({
-        variant: "destructive",
-        title: "⚠️ Error",
-        description: error.message,
-      });
-    }
-    // getBranches();
-    getFoodSupplies();
-    getEquipments();
-    getVehicles();
-  }, []);
-
-  // listen for changes in the database
-  useEffect(() => {
-    const supabase = createSupabaseBrowserClient();
-    const subscribedChannel1 = supabase
-      .channel("orders-follow-up")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "requests" },
-        (payload: any) => {
-          getRequests();
-        }
-      )
-      .subscribe();
-    const subscribedChannel2 = supabase
-      .channel("products-follow-up")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "food_supplies" },
-        (payload: any) => {
-          getFoodSupplies();
-          getRequests();
-        }
-      )
-      .subscribe();
-    const subscribedChannel3 = supabase
-      .channel("equipments-follow-up")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "equipments" },
-        (payload: any) => {
-          getEquipments();
-          getRequests();
-        }
-      )
-      .subscribe();
-    const subscribedChannel4 = supabase
-      .channel("vehicles-follow-up")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "vehicles" },
-        (payload: any) => {
-          getVehicles();
-          getRequests();
-        }
-      )
-      .subscribe();
-    return () => {
-      supabase.removeChannel(subscribedChannel1);
-      supabase.removeChannel(subscribedChannel2);
-      supabase.removeChannel(subscribedChannel3);
-      supabase.removeChannel(subscribedChannel4);
+    const initialFetch = async () => {
+      const result = getRequestServices(currentUser);
+      if (result) setError(result);
     };
+    initialFetch();
+    if (!currentUser) {
+      redirect("/auth");
+    }
   }, []);
+
+  useEffect(() => {
+    if (getRequestServices.length > 0) {
+      const supabase = createSupabaseBrowserClient();
+      const subscribedChannel = supabase
+        .channel(`service-mobile-orders-follow-up-${currentUser.id}`)
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "requests",
+            filter: `mobile_user_id=eq.${currentUser.id}`,
+          },
+          (payload: any) => {
+            getRequestServices(currentUser);
+          }
+        )
+        .subscribe();
+      return () => {
+        supabase.removeChannel(subscribedChannel);
+      };
+    }
+  }, [requestServicesData]);
 
   return (
-    <div className="flex flex-col justify-start place-items-center w-full h-full gap-0 p-0">
-      <div className="space-y-2 w-[90%] h-fit bg-opacity-85 p-4 rounded-2xl">
-        <div className="w-full flex justify-center py-3.5 no-scrollbar ">
-          {/* {requestsData.length === 0 ? (
-            <Loading />
-          ) : (
-          )} */}
-          <TransactionsContent dataRequests={requestsData} />
+    <div className="flex flex-col gap-4 w-full place-items-center justify-start px-4 relative">
+      <div className="w-full h-fit flex flex-col justify-between px-2 relative">
+        <div className="w-full flex flex-col py-6 sticky top-0 bg-darkBg z-[50]">
+          <h1 className="text-start text-2xl text-white font-bold">
+            Recent Requests
+          </h1>
+          <p className="text-white text-sm">
+            View all your recent request here.
+          </p>
         </div>
+
+        <RequestsContent requestServicesData={requestServicesData} />
       </div>
     </div>
   );
