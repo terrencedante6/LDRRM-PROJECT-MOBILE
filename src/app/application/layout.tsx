@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "../globals.css";
 import { cn } from "@/lib/utils";
-import Navbar from "@/components/layout/navbar/page";
+import Navbar from "@/components/layouts/nav-bar/navbar";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 
@@ -22,20 +22,21 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={cn("font-montserrat bg-darkBg", montserrat.variable)}>
-        <div className="w-full min-h-screen flex flex-col justify-center place-items-center">
-          <div className="hidden w-full min-h-screen md:flex justify-center place-items-center">
-            <h1 className="text-white">Download The App</h1>
-          </div>
-          <div className="md:hidden w-full min-h-screen flex flex-col justify-start place-items-center relative pb-24">
-            {children}
-            <Navbar />
-          </div>
-          <Sonner />
-          <Toaster />
-        </div>
-      </body>
-    </html>
+    <div
+      className={cn(
+        "font-montserrat bg-darkBg w-full min-h-screen flex flex-col justify-center place-items-center",
+        montserrat.variable
+      )}
+    >
+      <div className="hidden w-full min-h-screen md:flex justify-center place-items-center">
+        <h1 className="text-white">Download The App</h1>
+      </div>
+      <div className="md:hidden w-full min-h-screen flex flex-col justify-start place-items-center relative pb-24">
+        {children}
+        <Navbar />
+      </div>
+      <Sonner />
+      <Toaster />
+    </div>
   );
 }

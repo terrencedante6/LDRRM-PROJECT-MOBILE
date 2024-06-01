@@ -1,13 +1,14 @@
+//mobile Landing page before going to auth
 "use client";
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import type { Viewport } from "next";
 import Link from "next/link";
-import Onboarding from "@/images/onboarding.png";
+import Onboarding from "@/images/LP_background.jpg";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 import { useEffect } from "react";
 export const viewport: Viewport = {
   themeColor: "#fff",
@@ -25,38 +26,47 @@ export default function Home() {
   return (
     <div className="w-full min-h-screen flex flex-col">
       <div className="hidden w-full min-h-screen md:flex justify-center place-items-center">
-        <h1 className="text-white">Download The App</h1>
+        <h1 className="text-black text-2xl">Download The App</h1>
       </div>
-      <div className="md:hidden flex flex-col gap-8 h-screen max-h-screen w-full place-items-center justify-center py-8 px-5 bg-darkBg">
+      <div
+        className="md:hidden flex flex-col gap-8 h-screen max-h-screen w-full place-items-center justify-center py-8 px-5"
+        style={{ backgroundColor: "rgb(31,31,31)" }}
+      >
         <div className="w-full h-full flex flex-col gap-6 justify-center place-items-center">
           <Image
             src={Onboarding}
-            alt="Onboarding"
-            className="w-full pointer-events-none"
+            alt="LP_background"
+            className="w-full rounded-full pointer-events-none"
           />
           <div className="w-full flex flex-col gap-3">
             <h1 className="text-white w-full text-center text-2xl font-bold leading-10">
-              Let's{" "}
-              <span className=" bg-applicationPrimary text-white rounded-full px-4 py-.8 text-md">
-                track
-              </span>{" "}
-              your requests in{" "}
-              <span className=" bg-applicationPrimary text-white rounded-full px-4 py-.8 text-md">
-                real-time
+              "We
+              <span
+                className="text-white rounded-full px-4 py-.8 text-md"
+                style={{ backgroundColor: "rgb(31,31,31)" }}
+              >
+                Risk{""}
+              </span>
+              Ourselves{""}
+              <span
+                className="text-white rounded-full px-4 py-.8 text-md"
+                style={{ backgroundColor: "rgb(31,31,31)" }}
+              >
+                To Save Lives."
               </span>
             </h1>
             <p className="text-white text-center text-sm w-full">
-              Trackxp is a platform that helps you track your requests in
-              real-time and get notified when your request has a new progress.
+              LDRRM is a dedicated rescue application, designed to simplify and
+              expedite the process of calling for help.
             </p>
           </div>
         </div>
 
         <Button
-          className="w-full rounded-3xl h-[70px] bg-applicationPrimary hover:bg-applicationPrimary transform active:scale-95 transition-transform"
-          onClick={() => router.push("/auth")}
+          className="w-full rounded-xl h-[70px] bg-blue-500/75 hover:bg-applicationPrimary transform active:scale-95 transition-transform"
+          onClick={() => router.push("/auth/login")}
         >
-          Proceed
+          Next
         </Button>
       </div>
     </div>

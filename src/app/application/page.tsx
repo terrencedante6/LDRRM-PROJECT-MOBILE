@@ -1,3 +1,4 @@
+//Dashboard page for mobile
 "use client";
 
 import Image from "next/image";
@@ -12,7 +13,6 @@ import { useRequestServices } from "@/hooks/useOrderService";
 import { toast } from "@/components/ui/use-toast";
 import createSupabaseBrowserClient from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
-import useSound from "use-sound";
 
 export const viewport: Viewport = {
   themeColor: "#fff",
@@ -23,7 +23,6 @@ export default function Application() {
   const currentUser = getItem();
 
   const [notificationCounter, setNotificationCounter] = useState(0);
-  const [play] = useSound("/sounds/notification.mp3", { volume: 1 });
   const { getRequestServicesLatest, latestRequestServiceData } =
     useRequestServices();
 
@@ -36,12 +35,6 @@ export default function Application() {
       redirect("/auth");
     }
   }, []);
-
-  useEffect(() => {
-    if (notificationCounter > 0) {
-      play();
-    }
-  }, [notificationCounter]);
 
   useEffect(() => {
     if (latestRequestServiceData.length > 0) {
