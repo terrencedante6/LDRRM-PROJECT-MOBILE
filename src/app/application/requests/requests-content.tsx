@@ -15,16 +15,12 @@ export const viewport: Viewport = {
   themeColor: "#fff",
 };
 
-export default function RequestsContent({ requestServicesData }: any) {
+export default function RequestsContent({ request }: any) {
   const router = useRouter();
 
   return (
     <div className="w-full flex flex-col gap-6 justify-between rounded-2xl pb-14">
-      <div className="text-white">
-        {" "}
-        <h1>Hello world</h1>
-      </div>
-      {/* {requestServicesData.map((request: any) => {
+      {request.map((request: any) => {
         return (
           <div
             className="w-full h-fit bg-darkComponentBg rounded-2xl p-4 shadow-xl flex flex-col gap-2 active:scale-95 transition-all duration-300"
@@ -33,13 +29,9 @@ export default function RequestsContent({ requestServicesData }: any) {
             <div className="w-full flex flex-col">
               <div className="w-full flex justify-between place-items-center">
                 <h1 className="text-white text-xs">
-                  Status:{" "}
+                  Requester:{" "}
                   <span className="text-white text-xs font-bold">
-                    {
-                      request.progress_entries[
-                        request.progress_entries.length - 1
-                      ].progress_name
-                    }
+                    {request.requester_first_name} {request.requester_last_name}
                   </span>
                 </h1>
                 <h1 className="text-white text-xs bg-applicationPrimary px-4 py-1 rounded-full">
@@ -48,57 +40,24 @@ export default function RequestsContent({ requestServicesData }: any) {
               </div>
               <div className="w-full flex justify-between place-items-center">
                 <h3 className="w-full text-sm font-bold text-slate-200 ">
-                  Tracking ID: {request.tracking_id}
+                  Contact Number: {request.requester_contact_number}
                 </h3>
               </div>
               <div className="w-full flex justify-between place-items-center">
                 <h3 className="w-full text-xs font-regular text-slate-200 ">
-                  {new Date(request.created_at).toDateString()}
+                  Employee ID: {request.employees_id}
+                </h3>
+              </div>
+              <div className="w-full flex justify-between place-items-center">
+                <h3 className="w-full text-xs font-regular text-slate-200 ">
+                  Coordinates: {request.coordinates}
                 </h3>
               </div>
             </div>
-            <div className="flex justify-between place-items-center gap-2 w-full">
-              <div className="h-full flex flex-col justify-center">
-                <h2
-                  className={cn(
-                    "w-full text-center text-3xl font-extrabold text-white",
-                    request.progress_entries.length > 4 ? "text-green-300" : ""
-                  )}
-                >
-                  <CountUp
-                    start={0}
-                    end={Math.round(
-                      (request.progress_entries.length / 5) * 100
-                    )}
-                    duration={5}
-                  />
-                  %
-                </h2>
-                <span
-                  className={cn(
-                    "w-full text-center text-xs text-slate-300",
-                    request.progress_entries.length > 4 ? "text-green-300" : ""
-                  )}
-                >
-                  Completion
-                </span>
-              </div>
-              {/* <Image
-                src={
-                  request.vehicle_entries[0].type === "small"
-                    ? smallVehicle
-                    : request.vehicle_entries[0].type === "medium"
-                    ? mediumVehicle
-                    : largeVehicle
-                }
-                alt="Vehicle"
-                className="rounded-xl w-[70%] pointer-events-none"
-              /> */}
-      {/* </div> */}
-      //{" "}
+            {/* ... */}
+          </div>
+        );
+      })}
     </div>
-    // );
-    // })} */}
-    // </div>
   );
 }

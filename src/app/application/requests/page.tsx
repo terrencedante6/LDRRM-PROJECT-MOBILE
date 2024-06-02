@@ -12,6 +12,7 @@ import { redirect } from "next/navigation";
 import { useRequestServices } from "@/hooks/useOrderService";
 import { toast } from "@/components/ui/use-toast";
 import createSupabaseBrowserClient from "@/lib/supabase/client";
+import { useRequests } from "@/hooks/useOrders";
 
 export const viewport: Viewport = {
   themeColor: "#fff",
@@ -22,10 +23,10 @@ export default function Requests() {
   const currentUser = getItem();
 
   const [error, setError] = useState(false);
-  const { getRequestServices, requestServicesData } = useRequestServices();
+  const { getRequest, currentRequestData } = useRequests();
   useEffect(() => {
     const initialFetch = async () => {
-      const result = getRequestServices(currentUser);
+      const result = getRequest(currentUser);
       if (result) setError(result);
     };
     initialFetch();
@@ -35,7 +36,7 @@ export default function Requests() {
   }, []);
 
   useEffect(() => {
-    if (getRequestServices.length > 0) {
+    if (!error) {
       const supabase = createSupabaseBrowserClient();
       const subscribedChannel = supabase
         .channel(`service-mobile-orders-follow-up-${currentUser.id}`)
@@ -48,7 +49,7 @@ export default function Requests() {
             filter: `mobile_user_id=eq.${currentUser.id}`,
           },
           (payload: any) => {
-            getRequestServices(currentUser);
+            getRequest(currentUser);
           }
         )
         .subscribe();
@@ -56,7 +57,7 @@ export default function Requests() {
         supabase.removeChannel(subscribedChannel);
       };
     }
-  }, [requestServicesData]);
+  }, []);
 
   return (
     <div className="flex flex-col gap-4 w-full place-items-center justify-start px-4 relative">
@@ -70,7 +71,7 @@ export default function Requests() {
           </p>
         </div>
 
-        <RequestsContent requestServicesData={requestServicesData} />
+        <RequestsContent request={currentRequestData} />
       </div>
     </div>
   );
