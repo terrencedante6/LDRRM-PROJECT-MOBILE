@@ -288,13 +288,4 @@ export type allPurchaseRequestsVehicleDisplay = {
         request_vehicle_id: string | any;
       }[]
     | any;
-  progress_entries:
-    | {
-        id: number | any;
-        created_at: string | any;
-        progress_name: string | any;
-        description: string | any;
-        request_vehicle_id: string | any;
-      }[]
-    | any;
 };

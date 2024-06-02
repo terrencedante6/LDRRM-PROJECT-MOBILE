@@ -28,7 +28,7 @@ export default function page() {
       id: 3,
       icon: <FaHandHoldingMedical className="text-xl text-white" />,
       title: "Services",
-      link: "/application/advices",
+      link: "/application/rescuemepage",
     },
     {
       id: 4,

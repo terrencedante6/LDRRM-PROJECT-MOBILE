@@ -20,7 +20,11 @@ export default function RequestsContent({ requestServicesData }: any) {
 
   return (
     <div className="w-full flex flex-col gap-6 justify-between rounded-2xl pb-14">
-      {requestServicesData.map((request: any) => {
+      <div className="text-white">
+        {" "}
+        <h1>Hello world</h1>
+      </div>
+      {/* {requestServicesData.map((request: any) => {
         return (
           <div
             className="w-full h-fit bg-darkComponentBg rounded-2xl p-4 shadow-xl flex flex-col gap-2 active:scale-95 transition-all duration-300"
@@ -90,19 +94,11 @@ export default function RequestsContent({ requestServicesData }: any) {
                 alt="Vehicle"
                 className="rounded-xl w-[70%] pointer-events-none"
               /> */}
-            </div>
-            <div className="w-full flex justify-between pt-3 border-t border-dashed border-lightGray">
-              <span className="text-white text-md font-semibold">Total</span>
-              <span className="text-white text-lg font-bold">
-                ₱{" "}
-                {request.total_price
-                  .toFixed(2)
-                  .replace(/\d(?=(\d{3})+\.)/g, "$&,")}
-              </span>
-            </div>
-          </div>
-        );
-      })}
+      {/* </div> */}
+      //{" "}
     </div>
+    // );
+    // })} */}
+    // </div>
   );
 }

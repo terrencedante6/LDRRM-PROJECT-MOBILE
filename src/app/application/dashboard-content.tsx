@@ -54,7 +54,7 @@ export default function DashboardContent({
               </h1>
             </div>
             <div className="flex justify-between place-items-center gap-2 w-full">
-              <div className="h-full flex flex-col justify-center">
+              {/* <div className="h-full flex flex-col justify-center">
                 <h2
                   className={cn(
                     "w-full text-center text-3xl font-extrabold text-white",
@@ -76,7 +76,7 @@ export default function DashboardContent({
                 >
                   Completion
                 </span>
-              </div>
+              </div> */}
               {/* <Image
                 src={
                   data?.vehicle_entries[0].type === "small"

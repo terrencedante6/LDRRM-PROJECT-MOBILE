@@ -29,16 +29,15 @@ import {
 import { FaHandsHelping } from "react-icons/fa";
 import { BsBoxSeam } from "react-icons/bs";
 
-import { DataTable as ProductOrders } from "./order-service-tables/product-orders/data-table";
-import { DataTable as PartOrders } from "./order-service-tables/part-orders/data-table";
-import { DataTable as ServiceOrders } from "./order-service-tables/service-orders/data-table";
+import { DataTable as EquipmentRequests } from "./request-table/equipment-requests/data-table";
+import { DataTable as FoodSupplyRequests } from "./request-table/foodsupply-requests/data-table";
+import { DataTable as VehicleRequests } from "./request-table/vehicle-requests/data-table";
 
-import { initiateColumns as initiateProductOrdersColumns } from "./order-service-tables/product-orders/columns";
-import { initiateColumns as initiatePartsOrdersColumns } from "./order-service-tables/part-orders/columns";
-import { initiateColumns as initiateServiceOrdersColumns } from "./order-service-tables/service-orders/columns";
+import { initiateColumns as initiateEquipmentRequestsColumns } from "./request-table/equipment-requests/columns";
+import { initiateColumns as initiateFoodSupplyRequestsColumns } from "./request-table/foodsupply-requests/columns";
+import { initiateColumns as initiateVehicleRequestsColumns } from "./request-table/vehicle-requests/columns";
 import "@smastrom/react-rating/style.css";
-import { Rating as ReactRating, Star } from "@smastrom/react-rating";
-import Rating from "./add-rating/rating-dialog";
+import { Rating, Rating as ReactRating, Star } from "@smastrom/react-rating";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Carousel,
@@ -47,14 +46,13 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import Autoplay from "embla-carousel-autoplay";
+import { plugin } from "postcss";
 
 export const viewport: Viewport = {
   themeColor: "#fff",
 };
 
 export default function RequestsContent({ currentRequestServiceData }: any) {
-  const plugin = useRef(Autoplay({ delay: 1000, stopOnInteraction: true }));
   const [progress_entries_data, setProgressEntriesData] = useState<any>(
     currentRequestServiceData[0].progress_entries
       .map((progress: any) => ({
@@ -483,6 +481,21 @@ export default function RequestsContent({ currentRequestServiceData }: any) {
       })}
 
       {currentRequestServiceData.map((request: any) => {
+        function initiateServiceOrdersColumns(): import("@tanstack/table-core").ColumnDef<
+          unknown,
+          unknown
+        >[] {
+          throw new Error("Function not implemented.");
+        }
+
+        function initiateProductOrdersColumns() {
+          throw new Error("Function not implemented.");
+        }
+
+        function initiatePartsOrdersColumns() {
+          throw new Error("Function not implemented.");
+        }
+
         return (
           <div className="w-full h-fit bg-darkComponentBg rounded-2xl p-4 shadow-xl flex flex-col gap-2">
             <div className="w-full flex justify-between place-items-center">
@@ -511,8 +524,8 @@ export default function RequestsContent({ currentRequestServiceData }: any) {
                       </span>
                     </AccordionTrigger>
                     <AccordionContent className="rounded-xl">
-                      <ServiceRequests
-                        columns={initiateServiceRequestsColumns()}
+                      <VehicleRequests
+                        columns={initiateVehicleRequestsColumns()}
                         data={request.purchase_services}
                       />
                     </AccordionContent>
@@ -528,8 +541,8 @@ export default function RequestsContent({ currentRequestServiceData }: any) {
                       </span>
                     </AccordionTrigger>
                     <AccordionContent className="rounded-xl">
-                      <ProductRequests
-                        columns={initiateProductRequestsColumns()}
+                      <FoodSupplyRequests
+                        columns={initiateFoodSupplyRequestsColumns()}
                         data={request.purchase_products}
                       />
                     </AccordionContent>
@@ -545,8 +558,8 @@ export default function RequestsContent({ currentRequestServiceData }: any) {
                       </span>
                     </AccordionTrigger>
                     <AccordionContent className="bg-darkComponentBg rounded-xl">
-                      <PartRequests
-                        columns={initiatePartsRequestsColumns()}
+                      <EquipmentRequests
+                        columns={initiateEquipmentRequestsColumns()}
                         data={request.purchase_parts}
                       />
                     </AccordionContent>
@@ -678,10 +691,10 @@ export default function RequestsContent({ currentRequestServiceData }: any) {
           </div>
         );
       })}
-      <Rating
+      {/* <Rating
         data={currentRequestServiceData[0]}
         progress_entries={progress_entries_data}
-      />
+      /> */}
     </div>
   );
 }

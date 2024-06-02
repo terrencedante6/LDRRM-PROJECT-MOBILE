@@ -124,7 +124,7 @@ export default function Request({ params }: { params: any }) {
         </div>
       </div>
 
-      {currentRequestServiceData.length === 0 ? (
+      {/* {currentRequestServiceData.length === 0 ? (
         <div className="w-full min-h-[70vh] flex justify-center place-items-center">
           <Image
             src={Searching}
@@ -136,7 +136,7 @@ export default function Request({ params }: { params: any }) {
         <RequestsContent
           currentRequestServiceData={currentRequestServiceData}
         />
-      )}
+      )} */}
     </div>
   );
 }
