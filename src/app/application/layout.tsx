@@ -36,8 +36,8 @@ export default async function RootLayout({
         style={{ backgroundColor: "rgb(18,18,18)" }}
       >
         {children}
-        <Navbar />
       </div>
+      <Navbar />
       <Sonner />
       <Toaster />
     </div>
