@@ -1,15 +1,35 @@
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { FormControl } from "@/components/ui/form";
+
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRequests } from "@/hooks/useOrders";
 import { toast } from "@/components/ui/use-toast";
+import MultiSelect from "@/components/ui/multi-select";
+
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 const RequestSchema = z.object({
   requester_first_name: z.string().nullable(),
   requester_last_name: z.string().nullable(),
   requester_contact_number: z.string().nullable(),
   coordinates: z.string(),
+  calamity_type: z.string(),
 });
 
 interface RequestData {
@@ -17,6 +37,7 @@ interface RequestData {
   requester_last_name: string | null;
   requester_contact_number: string | null;
   coordinates: string;
+  calamity_type: string;
 }
 
 interface RequestFormProps {
@@ -27,6 +48,7 @@ export default function RequestForm({ requestData }: RequestFormProps) {
   const { createRequest } = useRequests();
   const form = useForm<RequestData>({
     resolver: zodResolver(RequestSchema),
+    defaultValues: requestData,
   });
 
   type Coordinates = {
@@ -79,6 +101,10 @@ export default function RequestForm({ requestData }: RequestFormProps) {
     window.location.reload();
   };
 
+  //debugging zone
+
+  //debugging zone
+
   return (
     <form
       className="w-full flex flex-col gap-2"
@@ -110,6 +136,15 @@ export default function RequestForm({ requestData }: RequestFormProps) {
         placeholder="Contact Number"
         className="w-full text-sm px-5 py-2.5 h-[50px] rounded-xl bg-lightBorder text-black border border-lightBorder"
       />
+      <label className="text-sm font-bold text-white pointer-events-none">
+        Calamity Type
+      </label>
+      <input
+        {...form.register("calamity_type")}
+        placeholder="Calamity Type"
+        className="w-full text-sm px-5 py-2.5 h-[50px] rounded-xl bg-lightBorder text-black border border-lightBorder"
+      />
+
       <label className="text-sm font-bold text-white pointer-events-none">
         Coordinates
       </label>

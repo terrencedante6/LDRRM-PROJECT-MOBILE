@@ -71,7 +71,7 @@ export type workers = {
 
 export type calamities = {
   id: number;
-  calamity_type: string;
+  name: string;
   description: string;
 };
 

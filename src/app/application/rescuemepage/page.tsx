@@ -13,7 +13,7 @@ import { toast } from "@/components/ui/use-toast";
 import createSupabaseBrowserClient from "@/lib/supabase/client";
 import RequestForm from "./rescuemepage-content";
 import { useRequests } from "@/hooks/useOrders";
-import LocateDevice from "./locatedevice";
+// import LocateDevice from "./locatedevice";
 
 export const viewport: Viewport = {
   themeColor: "#fff",
@@ -79,11 +79,11 @@ export default function Requests() {
           <RequestForm requestData={requestsData} />
         </div>
 
-        <div className="flex flex-col gap-3">
-          <label className="text-sm font-bold text-white pointer-events-none mt-4">
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-bold text-white pointer-events-none mt-2">
             Call for help
           </label>
-          <p className="text-base text-white italic">
+          <p className="text-base text-white italic justify-center text-center">
             Would you like to call Amlan Emergency Hotlines Directly for help?
             Click the button below.
           </p>

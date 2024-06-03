@@ -2,19 +2,9 @@
 
 "use client";
 
-import Image from "next/image";
-
 import type { Viewport } from "next";
 import Link from "next/link";
-// import smallVehicle from "@/images/vehicle-small-hd.png";
-// import mediumVehicle from "@/images/vehicle-medium-hd.png";
-// import largeVehicle from "@/images/vehicle-large-hd.png";
-import CountUp from "react-countup";
-import { cn } from "@/lib/utils";
 import { allPurchaseRequestsVehicleDisplay } from "@/types";
-import { FaAngleRight } from "react-icons/fa";
-import { Button } from "@/components/ui/button";
-// import Celebrate from "@/images/celebrate.png";
 import { useRouter } from "next/navigation";
 
 export const viewport: Viewport = {
@@ -97,7 +87,7 @@ export default function DashboardContent({
             style={{ backgroundColor: "rgb(31,31,31)" }}
           >
             <h1 className="text-white font-semibold text-sm">
-              Im not sure pa what to put here
+              {/* Im not sure pa what to put here */}
             </h1>
             <h1 className="w-full h-full flex justify-center place-items-center font-bold text-center text-white text-3xl">
               {currentUser?.points}
@@ -107,15 +97,15 @@ export default function DashboardContent({
             className="w-[60%] h-[130px] flex flex-col justify-between rounded-2xl p-4 shadow-lg"
             style={{ backgroundColor: "rgb(31,31,31)" }}
           >
-            <h1 className="text-white font-semibold text-sm">Announcements</h1>
+            {/* <h1 className="text-white font-semibold text-sm">Announcements</h1> */}
 
             <Link
               href="/application/announcements"
               className="w-full flex justify-center place-items-center active:scale-90"
             >
-              <Button className="w-full hover:bg-applicationPrimary/90 rounded-xl font-semibold text-sm">
+              {/* <Button className="w-full hover:bg-applicationPrimary/90 rounded-xl font-semibold text-sm">
                 <FaAngleRight className="text-white" />
-              </Button>
+              </Button> */}
             </Link>
           </div>
         </div>
@@ -123,7 +113,7 @@ export default function DashboardContent({
           className="w-full min-h-[240px] flex flex-col justify-between bg-darkComponentBg rounded-2xl gap-2 p-4 shadow-lg active:scale-95 transition-all duration-300"
           style={{ backgroundColor: "rgb(31,31,31)" }}
         >
-          <h1 className="text-white font-semibold text-lg">📣 What's New?</h1>
+          {/* <h1 className="text-white font-semibold text-lg">📣 What's New?</h1> */}
           <div className="w-full h-full flex justify-between place-items-start gap-2">
             {/* <Image
               src={Celebrate}
@@ -132,14 +122,39 @@ export default function DashboardContent({
             /> */}
             <div className="w-full h-full flex flex-col justify-between place-items-center">
               <div className="w-full h-full flex flex-col gap-1">
-                <h1 className="text-white font-semibold text-sm">
+                {/* <h1 className="text-white font-semibold text-sm">
                   Mobile Platforms!
                 </h1>
                 <p className="text-xs text-white">
                   We are excited to announce that we are now available on both
                   Android and iOS platforms. This is a huge milestone for us and
                   we are excited to see you on the app.
-                </p>
+                </p> */}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="w-full min-h-[240px] flex flex-col justify-between bg-darkComponentBg rounded-2xl gap-2 p-4 shadow-lg active:scale-95 transition-all duration-300"
+          style={{ backgroundColor: "rgb(31,31,31)" }}
+        >
+          {/* <h1 className="text-white font-semibold text-lg">📣 What's New?</h1> */}
+          <div className="w-full h-full flex justify-between place-items-start gap-2">
+            {/* <Image
+              src={Celebrate}
+              alt="Celebrate"
+              className="w-[38%] pointer-events-none"
+            /> */}
+            <div className="w-full h-full flex flex-col justify-between place-items-center">
+              <div className="w-full h-full flex flex-col gap-1">
+                {/* <h1 className="text-white font-semibold text-sm">
+                  Mobile Platforms!
+                </h1>
+                <p className="text-xs text-white">
+                  We are excited to announce that we are now available on both
+                  Android and iOS platforms. This is a huge milestone for us and
+                  we are excited to see you on the app.
+                </p> */}
               </div>
             </div>
           </div>

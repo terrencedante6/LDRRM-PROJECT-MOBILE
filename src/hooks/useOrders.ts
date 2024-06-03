@@ -6,7 +6,8 @@ type RequestProps = {
   requester_last_name: string | null;
   requester_contact_number: string | null;
   coordinates: string;
-  mobile_user_id: string; // Assuming mobile_user_id is a string, adjust as needed
+  mobile_user_id: string;
+  calamity_type: string;
 };
 
 export const useRequests: any = () => {
@@ -29,6 +30,7 @@ export const useRequests: any = () => {
         mobile_user_id: props.mobile_user_id,
         status: "Ongoing",
         employees_id: null,
+        calamity_type: props.calamity_type,
       });
 
       console.log("Insert result:", result);
