@@ -23,18 +23,15 @@ export default function Requests() {
   const currentUser = getItem();
 
   const [error, setError] = useState(false);
-  const { getRequest, currentRequestData } = useRequests();
+  const { getRequests, requestsData } = useRequests();
 
-  // useEffect(() => {
-  //   const initialFetch = async () => {
-  //     const result = getRequest(currentUser);
-  //     if (result) setError(result);
-  //   };
-  //   initialFetch();
-  //   if (!currentUser) {
-  //     redirect("/auth");
-  //   }
-  // }, []);
+  useEffect(() => {
+    const initialFetch = async () => {
+      const result = getRequests();
+      if (result) setError(result);
+    };
+    initialFetch();
+  }, []);
 
   useEffect(() => {
     if (!error) {
@@ -50,7 +47,7 @@ export default function Requests() {
             filter: `mobile_user_id=eq.${currentUser.id}`,
           },
           (payload: any) => {
-            getRequest(currentUser);
+            getRequests(currentUser);
           }
         )
         .subscribe();
@@ -72,7 +69,7 @@ export default function Requests() {
           </p>
         </div>
 
-        <RequestsContent request={currentRequestData} />
+        <RequestsContent request={requestsData} />
       </div>
     </div>
   );

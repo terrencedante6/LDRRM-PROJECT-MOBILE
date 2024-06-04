@@ -48,14 +48,20 @@ export const useRequests: any = () => {
     }
   };
 
-  const getRequests = async () => {
-    const { data, error } = await supabase.from("requests").select("*");
+  const getRequests = async (props?: any) => {
+    const result = await supabase
+      .from("requests")
+      .select(
+        "*, employees(*, roles(*)), use_foodsupplies(*), use_equipments(*), use_vehicles(*)"
+      )
+      .order("created_at", { ascending: false });
+    console.log(result);
 
-    if (error) {
-      console.error("Error fetching requests:", error);
+    if (result.error) {
+      console.error("Error fetching requests:", result.error);
       return;
     }
-
+    const { data } = result;
     setRequestsData(data);
   };
 
