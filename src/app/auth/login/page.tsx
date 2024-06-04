@@ -22,7 +22,7 @@ import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 import { useMobileUsers } from "@/hooks/useMobileUsers";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { Image } from "lucide-react";
+import Image from "next/image";
 import amlanldrrmlogo from "@/images/amlanldrrmlogo.png";
 
 const loginSchema = z.object({
@@ -159,8 +159,8 @@ export default function Login() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.5 }}
         >
-          <img
-            src={amlanldrrmlogo.src}
+          <Image
+            src={amlanldrrmlogo}
             alt=""
             className="mx-auto pointer-events-none cursor-pointer w-[30%] z-50"
             onClick={() => router.push("/")}
@@ -278,7 +278,7 @@ export default function Login() {
               </div>
               <motion.div className="w-full flex justify-center">
                 <span className="w-full text-center text-white">
-                  Don't have an account?{" "}
+                  Dont have an account?{" "}
                   <span
                     onClick={() => setAuthSwitch(!authSwitch)}
                     className="text-applicationPrimary font-bold hover:underline"
