@@ -330,13 +330,12 @@ export const LocationSearch = ({ control }: { control: any }) => {
         </button> */}
       </div>
       <div
-        className="mt-10 flex justify-center items-center rounded-lg"
-        style={{ height: "50vh", width: "100%" }} // Adjust the height here for mobile view
+        className="mt-10 flex justify-center items-center rounded-lg w-64 h-64 overflow-hidden" // Add overflow-hidden
       >
         <MapContainer
           center={mapCenter || [9.4401, 123.187]}
           zoom={13}
-          className="w-full h-full"
+          className="w-full h-full" // Use Tailwind CSS utilities for width and height
         >
           {isSatellite ? (
             <>

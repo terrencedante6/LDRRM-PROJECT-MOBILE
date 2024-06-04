@@ -24,16 +24,17 @@ export default function Requests() {
 
   const [error, setError] = useState(false);
   const { getRequest, currentRequestData } = useRequests();
-  useEffect(() => {
-    const initialFetch = async () => {
-      const result = getRequest(currentUser);
-      if (result) setError(result);
-    };
-    initialFetch();
-    if (!currentUser) {
-      redirect("/auth");
-    }
-  }, []);
+
+  // useEffect(() => {
+  //   const initialFetch = async () => {
+  //     const result = getRequest(currentUser);
+  //     if (result) setError(result);
+  //   };
+  //   initialFetch();
+  //   if (!currentUser) {
+  //     redirect("/auth");
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (!error) {

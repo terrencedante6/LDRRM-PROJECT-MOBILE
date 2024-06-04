@@ -1,5 +1,5 @@
 "use client";
-
+import { MapContainer, TileLayer } from "react-leaflet";
 import Image from "next/image";
 
 import type { Viewport } from "next";
@@ -28,6 +28,7 @@ import { allPurchaseRequestsDisplay } from "@/types";
 import { cn } from "@/lib/utils";
 import router from "next/router";
 import { useForm } from "react-hook-form";
+import { LatLngTuple } from "leaflet";
 // import LocateDevice from "./locatedevice";
 
 export const viewport: Viewport = {
@@ -35,6 +36,7 @@ export const viewport: Viewport = {
 };
 
 export default function Page() {
+  const mapCenter = [9.4401, 123.187]; // Declare the mapCenter variable
   const { data: requests, error } = useRequests(); // Step 2
   const { getItem } = useLocalStorage("value");
   const currentUser = getItem();
@@ -145,9 +147,8 @@ export default function Page() {
                   </div>
                 )
               )}
-
-            <LocationSearch control={control} />
           </div>
+          <LocationSearch control={control} />
         </div>
       </div>
     </div>
