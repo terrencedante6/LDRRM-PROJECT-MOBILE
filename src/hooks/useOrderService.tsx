@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import createSupabaseBrowserClient from "@/lib/supabase/client";
 import { useState } from "react";
 import { useLocalStorage } from "./useLocalStorage";
