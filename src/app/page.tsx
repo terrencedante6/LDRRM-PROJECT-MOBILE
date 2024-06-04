@@ -40,7 +40,7 @@ export default function Home() {
           />
           <div className="w-full flex flex-col gap-3">
             <h1 className="text-white w-full text-center text-2xl font-bold leading-10">
-              "We
+              We
               <span
                 className="text-white rounded-full px-4 py-.8 text-md"
                 style={{ backgroundColor: "rgb(31,31,31)" }}
@@ -52,7 +52,7 @@ export default function Home() {
                 className="text-white rounded-full px-4 py-.8 text-md"
                 style={{ backgroundColor: "rgb(31,31,31)" }}
               >
-                To Save Lives."
+                To Save Lives.
               </span>
             </h1>
             <p className="text-white text-center text-sm w-full">
