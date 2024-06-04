@@ -23,6 +23,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 const RequestSchema = z.object({
   requester_first_name: z.string().nullable(),
@@ -46,6 +47,9 @@ interface RequestFormProps {
 
 export default function RequestForm({ requestData }: RequestFormProps) {
   const { createRequest } = useRequests();
+  const { getItem } = useLocalStorage("value");
+  const currentUser = getItem();
+
   const form = useForm<RequestData>({
     resolver: zodResolver(RequestSchema),
     defaultValues: requestData,
@@ -119,6 +123,7 @@ export default function RequestForm({ requestData }: RequestFormProps) {
         {...form.register("requester_first_name")}
         placeholder="First Name"
         className="w-full text-sm px-5 py-2.5 h-[50px] rounded-xl bg-lightBorder text-black border border-lightBorder"
+        value={currentUser?.first_name}
       />
       <label className="text-sm font-bold text-white pointer-events-none">
         Last Name
@@ -127,6 +132,7 @@ export default function RequestForm({ requestData }: RequestFormProps) {
         {...form.register("requester_last_name")}
         placeholder="Last Name"
         className="w-full text-sm px-5 py-2.5 h-[50px] rounded-xl bg-lightBorder text-black border border-lightBorder"
+        value={currentUser?.last_name}
       />
       <label className="text-sm font-bold text-white pointer-events-none">
         Contact Number
