@@ -89,7 +89,7 @@ export default function RequestForm({ requestData }: RequestFormProps) {
     if (result?.error) {
       toast({
         variant: "destructive",
-        title: "Error",
+        title: "Error napud",
         description: result.error.message,
       });
       return;
