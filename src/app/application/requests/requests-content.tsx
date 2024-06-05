@@ -23,18 +23,18 @@ export default function RequestsContent({ request }: any) {
       {request.map((request: any) => {
         return (
           <div
-            className="w-full h-fit bg-darkComponentBg rounded-2xl p-4 shadow-xl flex flex-col gap-2 active:scale-95 transition-all duration-300"
-            onClick={() => router.push(`/application/requests/${request.id}`)}
-            key={request.id}
+            className="w-full h-fit bg-slate-700/20 rounded-2xl p-4 shadow-xl flex flex-col gap-2 active:scale-95 transition-all duration-300"
+            // onClick={() => router.push(`/application/requests/${request.id}`)}
+            // key={request.id}
           >
             <div className="w-full flex flex-col">
               <div className="w-full flex justify-between place-items-center">
-                <h1 className="text-white text-xs">
+                <h3 className="w-full text-sm font-bold text-slate-200 ">
                   Requester:{" "}
                   <span className="text-white text-xs font-bold">
                     {request.requester_first_name} {request.requester_last_name}
                   </span>
-                </h1>
+                </h3>
                 <h1 className="text-white text-xs bg-applicationPrimary px-4 py-1 rounded-full">
                   {request.status}
                 </h1>
@@ -46,12 +46,12 @@ export default function RequestsContent({ request }: any) {
               </div>
               <div className="w-full flex justify-between place-items-center">
                 <h3 className="w-full text-xs font-regular text-slate-200 ">
-                  Employee ID: {request.employees_id}
+                  Coordinates: {request.coordinates}
                 </h3>
               </div>
               <div className="w-full flex justify-between place-items-center">
                 <h3 className="w-full text-xs font-regular text-slate-200 ">
-                  Coordinates: {request.coordinates}
+                  Incident: {request.calamity_type}
                 </h3>
               </div>
             </div>

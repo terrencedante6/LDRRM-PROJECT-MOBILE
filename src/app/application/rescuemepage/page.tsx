@@ -69,26 +69,24 @@ export default function Requests() {
     <div className="flex flex-col gap-4 w-full place-items-center justify-start px-4 relative">
       <div className="w-full h-fit flex flex-col justify-between px-2 relative">
         <div className="w-full flex flex-col py-6 sticky top-0 bg-darkBg z-[50]">
-          <h1 className="text-start text-2xl text-white font-bold">Forms</h1>
-          <p className="text-white text-sm">
-            Forms for requesting rescue & also options to call the line
-          </p>
+          <div className="flex justify-between items-center">
+            <h1 className="text-start text-2xl text-white font-bold">
+              Assistance Page
+            </h1>
+          </div>
         </div>
 
         <div>
           <RequestForm requestData={requestsData} />
         </div>
 
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-bold text-white pointer-events-none mt-2">
-            Call for help
-          </label>
-          <p className="text-base text-white italic justify-center text-center">
-            Would you like to call Amlan Emergency Hotlines Directly for help?
-            Click the button below.
+        <div className="flex flex-col gap-2 m-1">
+          <p className="text-sm text-white italic justify-center text-center">
+            Providing false information is a crime. For accurate contact with
+            Amlan Emergency Hotlines, click below.
           </p>
           <Link href="./rescuemepage/callforhelp">
-            <button className="w-[30%] rounded-md h-[40px] bg-emerald-600 transform active:scale-95 transition-transform text-sm text-white font-bold text-center cursor-pointer">
+            <button className="w-[100%] rounded-xl h-[50px] px-2 bg-emerald-600 transform active:scale-95 transition-transform text-base text-white font-bold text-center cursor-pointer mt-1">
               Call for help
             </button>
           </Link>

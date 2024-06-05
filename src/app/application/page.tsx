@@ -3,7 +3,6 @@
 import Image from "next/image";
 
 import type { Viewport } from "next";
-import Link from "next/link";
 
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { useEffect, useState } from "react";
@@ -19,6 +18,8 @@ import { allPurchaseRequestsDisplay } from "@/types";
 import { cn } from "@/lib/utils";
 import router from "next/router";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import Link from "next/link";
 // import LocateDevice from "./locatedevice";
 
 export const viewport: Viewport = {
@@ -123,42 +124,6 @@ export default function Application() {
                 {/* {data?.status} <LocationSearch control={control} /> */}
               </h1>
             </div>
-            <div className="flex justify-between place-items-center gap-2 w-full">
-              {/* <div className="h-full flex flex-col justify-center">
-                <h2
-                  className={cn(
-                    "w-full text-center text-3xl font-extrabold text-white",
-                    data?.progress_entries.length > 4 ? "text-green-300" : ""
-                  )}
-                >
-                  <CountUp
-                    start={0}
-                    end={Math.round((data?.progress_entries.length / 5) * 100)}
-                    duration={5}
-                  />
-                  %
-                </h2>
-                <span
-                  className={cn(
-                    "w-full text-center text-xs text-slate-300",
-                    data?.progress_entries.length > 4 ? "text-green-300" : ""
-                  )}
-                >
-                  Completion
-                </span>
-              </div> */}
-              {/* <Image
-                src={
-                  data?.vehicle_entries[0].type === "small"
-                    ? smallVehicle
-                    : data?.vehicle_entries[0].type === "medium"
-                    ? mediumVehicle
-                    : largeVehicle
-                }
-                alt="Vehicle"
-                className="rounded-xl w-[70%] pointer-events-none"
-              /> */}
-            </div>
           </div>
         )}
         <div className="w-full flex gap-4 justify-between">
@@ -214,31 +179,18 @@ export default function Application() {
             </div>
           </div>
         </div>
-        <div
-          className="w-full min-h-[240px] flex flex-col justify-between bg-darkComponentBg rounded-2xl gap-2 p-4 shadow-lg active:scale-95 transition-all duration-300"
-          style={{ backgroundColor: "rgb(31,31,31)" }}
-        >
-          {/* <h1 className="text-white font-semibold text-lg">📣 What's New?</h1> */}
-          <div className="w-full h-full flex justify-between place-items-start gap-2">
-            {/* <Image
-              src={Celebrate}
-              alt="Celebrate"
-              className="w-[38%] pointer-events-none"
-            /> */}
-            <div className="w-full h-full flex flex-col justify-between place-items-center">
-              <div className="w-full h-full flex flex-col gap-1">
-                {/* <h1 className="text-white font-semibold text-sm">
-                  Mobile Platforms!
-                </h1>
-                <p className="text-xs text-white">
-                  We are excited to announce that we are now available on both
-                  Android and iOS platforms. This is a huge milestone for us and
-                  we are excited to see you on the app.
-                </p> */}
-              </div>
+        <Link href="/application/mapping">
+          <button
+            className="w-full min-h-[240px] flex flex-col justify-between rounded-2xl gap-2 p-4 shadow-lg active:scale-95 transition-all duration-300 cursor-pointer bg-transparent border-none"
+            style={{ backgroundColor: "rgb(31,31,31)" }}
+          >
+            <div>
+              <h1 className="text-white font-semibold text-lg">
+                Check out our Map!
+              </h1>
             </div>
-          </div>
-        </div>
+          </button>
+        </Link>
       </div>
     </div>
   );

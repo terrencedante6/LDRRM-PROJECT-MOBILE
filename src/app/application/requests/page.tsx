@@ -27,7 +27,7 @@ export default function Requests() {
 
   useEffect(() => {
     const initialFetch = async () => {
-      const result = getRequests();
+      const result = await getRequests(currentUser);
       if (result) setError(result);
     };
     initialFetch();
@@ -69,7 +69,7 @@ export default function Requests() {
           </p>
         </div>
 
-        <RequestsContent request={requestsData} />
+        <RequestsContent request={requestsData} currentUser={currentUser} />
       </div>
     </div>
   );

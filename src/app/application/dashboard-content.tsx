@@ -23,12 +23,12 @@ export default function DashboardContent({
       className="flex flex-col gap-8 w-full place-items-center justify-start p-6 relative"
       style={{ backgroundColor: "rgb(18,18,18)" }}
     >
-      <div className="w-full h-fit flex flex-col">
+      {/* <div className="w-full h-fit flex flex-col">
         <h1 className="text-lg text-white">Welcome Back,</h1>
         <h1 className="text-2xl text-white font-bold">
           {currentUser?.first_name} {currentUser?.last_name}
         </h1>
-      </div>
+      </div> */}
       <div className="w-full h-fit flex flex-col gap-4">
         {latestRequestServiceData.length > 0 && (
           <div

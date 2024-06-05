@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { Button } from "antd";
+import { Link } from "lucide-react";
 
 const RequestSchema = z.object({
   requester_first_name: z.string().nullable(),
@@ -143,11 +145,11 @@ export default function RequestForm({ requestData }: RequestFormProps) {
         className="w-full text-sm px-5 py-2.5 h-[50px] rounded-xl bg-lightBorder text-black border border-lightBorder"
       />
       <label className="text-sm font-bold text-white pointer-events-none">
-        Calamity Type
+        Incidents
       </label>
       <input
         {...form.register("calamity_type")}
-        placeholder="Calamity Type"
+        placeholder="Incidents"
         className="w-full text-sm px-5 py-2.5 h-[50px] rounded-xl bg-lightBorder text-black border border-lightBorder"
       />
 
@@ -176,15 +178,20 @@ export default function RequestForm({ requestData }: RequestFormProps) {
       ) : (
         <p className="text-sm text-white">Waiting for your location...</p>
       )}
-      <p className="text-base text-white italic">
+      <p className="text-sm text-white italic justify-center text-center">
         Please copy the coordinates and paste it to the form above. So we can
         better find your specific location.
       </p>
-      <div className="flex justify-center">
+      <div className="flex justify-center w-full gap-3">
         <input
           type="submit"
           className="w-[30%] rounded-xl h-[50px] bg-emerald-600 transform active:scale-95 transition-transform text-lg text-white font-bold text-center cursor-pointer mt-1"
         />
+        {/* <Link href="/application/rescuemepage/callforhelp">
+          <a className="w-[30%] rounded-xl h-[50px] bg-emerald-600 transform active:scale-95 transition-transform text-lg text-white font-bold text-center cursor-pointer mt-1">
+            Call for help
+          </a>
+        </Link> */}
       </div>
     </form>
   );
