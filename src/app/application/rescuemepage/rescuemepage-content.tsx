@@ -143,6 +143,7 @@ export default function RequestForm({ requestData }: RequestFormProps) {
         {...form.register("requester_contact_number")}
         placeholder="Contact Number"
         className="w-full text-sm px-5 py-2.5 h-[50px] rounded-xl bg-lightBorder text-black border border-lightBorder"
+        value={currentUser?.requester_contact_number}
       />
       <label className="text-sm font-bold text-white pointer-events-none">
         Incidents

@@ -25,6 +25,7 @@ export default function Requests() {
 
   const [error, setError] = useState(false);
   const { getRequests, requestsData } = useRequests();
+
   useEffect(() => {
     const initialFetch = async () => {
       const result = getRequests(currentUser);
@@ -32,7 +33,7 @@ export default function Requests() {
     };
     initialFetch();
     if (!currentUser) {
-      redirect("/auth");
+      redirect("/auth/login");
     }
   }, []);
 

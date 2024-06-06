@@ -6,8 +6,8 @@ import coastguardlogo from "@/images/coastguardlogo.png";
 
 export default function Page() {
   return (
-    <div className="text-white space-y-4 flex flex-col items-center">
-      <h1 className="text-2xl font-bold">Amlan Emergency Hotlines</h1>
+    <div className="text-white space-y-4 items-center flex flex-col gap-1 place-items-center justify-start p-6 relative w-full h-fit ">
+      <h1 className="text-2xl font-bold m-2">Amlan Emergency Hotlines</h1>
       <a href="tel:09659074227" className="m-2">
         <button className="hover:bg-orange-600 py-2 px-4 flex flex-row items-start space-x-2 bg-orange-500 transform active:scale-95 transition-transform text-lg text-white font-bold text-center cursor-pointer rounded-3xl w-70 h-30">
           <Image
@@ -19,6 +19,7 @@ export default function Page() {
           <div className="flex flex-col text-2xl">
             <span>AMLAN LDRRMO</span>
             <p>09659074227</p>
+            <p>09659074227</p>
           </div>
         </button>
       </a>
@@ -27,6 +28,7 @@ export default function Page() {
           <Image src={pnplogo} alt="Police logo" width={100} height={90} />
           <div className="flex flex-col text-2xl">
             <span>POLICE (PNP)</span>
+            <p>09659074227</p>
             <p>09659074227</p>
           </div>
         </button>
@@ -42,6 +44,7 @@ export default function Page() {
           <div className="flex flex-col text-2xl">
             <span>BUREAU OF FIRE PROTECTION</span>
             <p>09659074227</p>
+            <p>09659074227</p>
           </div>
         </button>
       </a>
@@ -55,6 +58,7 @@ export default function Page() {
           />
           <div className="flex flex-col text-2xl">
             <span>COAST GUARD</span>
+            <p>09659074227</p>
             <p>09659074227</p>
           </div>
         </button>

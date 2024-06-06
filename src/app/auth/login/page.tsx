@@ -165,10 +165,6 @@ export default function Login() {
             className="mx-auto pointer-events-none cursor-pointer w-[30%] z-50"
             onClick={() => router.push("/")}
           />
-          {/* <p className="text-white text-xs w-full text-center font-regular z-50">
-           Words Words <br /> Words Words
-          </p> */}
-
           <motion.div
             className="w-full z-10 absolute top-0"
             initial={{ opacity: 0 }}
@@ -299,11 +295,6 @@ export default function Login() {
               className="w-full h-[80%] rounded-t-[20px] p-8 flex flex-col gap-2 absolute bottom-0 z-50 overflow-hidden "
               style={{ backgroundColor: "rgb(31,31,31)" }}
             >
-              {/* <Image
-                src={SignUpAvatar}
-                alt="Avatar"
-                className="absolute w-[25%] top-[3.3%] right-10 z-0"
-              /> */}
               <div className="w-full flex flex-col">
                 <h1 className="w-full text-white text-2xl font-bold">
                   Welcome!

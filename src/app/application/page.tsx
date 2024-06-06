@@ -34,15 +34,15 @@ export default function Application() {
   const { getRequestServicesLatest, latestRequestServiceData } =
     useRequestServices();
 
-  // useEffect(() => {
-  //   const initialFetch = async () => {
-  //     const result = getRequestServicesLatest(currentUser);
-  //   };
-  //   initialFetch();
-  //   if (!currentUser) {
-  //     redirect("/auth");
-  //   }
-  // }, []);
+  useEffect(() => {
+    const initialFetch = async () => {
+      const result = getRequestServicesLatest(currentUser);
+    };
+    initialFetch();
+    if (!currentUser) {
+      redirect("/auth/login");
+    }
+  }, []);
 
   useEffect(() => {
     if (latestRequestServiceData.length > 0) {

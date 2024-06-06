@@ -39,31 +39,12 @@ export default function Profile() {
   return (
     <div className="flex flex-col gap-4 min-h-[80vh] w-full place-items-center justify-between py-8 p-4 relative">
       <div className="w-full flex flex-col gap-4 place-items-center justify-center">
-        <Avatar className="h-44 w-44 rounded-lg">
-          <AvatarImage
-            className="rounded-lg"
-            src={currentUser?.image_url}
-            alt="@shadcn"
-          />
-          <AvatarFallback className="rounded-lg">
-            {currentUser?.first_name[0]} {currentUser?.last_name[0]}
-          </AvatarFallback>
-        </Avatar>
         <div className="w-full flex flex-col gap-1">
           <h1 className="text-3xl font-bold w-full text-center text-white">
-            {currentUser?.first_name} {currentUser?.last_name}
+            Coming Soon..
           </h1>
-          <h2 className="text-md font-medium w-full text-center text-slate-400">
-            {currentUser?.email}
-          </h2>
         </div>
       </div>
-      <Button
-        className="w-[50%] rounded-xl h-[60px] bg-red-500 hover:bg-red-600 transform active:scale-95 transition-transform"
-        onClick={onSignOut}
-      >
-        Logout
-      </Button>
     </div>
   );
 }
