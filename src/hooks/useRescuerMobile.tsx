@@ -1,75 +1,59 @@
 import createSupabaseBrowserClient from "@/lib/supabase/client";
 import { useState } from "react";
 
-export const useRescuers: any = () => {
+interface Role {
+  id: string; // Updated to string for specificity
+  role: string;
+}
+
+interface Rescuer {
+  id: string; // Updated to string for specificity
+  email: string;
+  first_name: string;
+  last_name: string;
+  image_url: string;
+  address: string;
+  contact_number: string;
+  gender: string;
+  roles: Role[]; // Updated to use Role interface
+  status: string;
+  dob: Date; // Updated to Date assuming dob is a date
+}
+
+export const useRescuers = () => {
   const supabase = createSupabaseBrowserClient();
-  const [allRescuerData, setAllRescuerData] = useState<any>([]);
-  const [currentRescuerData, setCurrentRescuerData] = useState<any>([]);
+  const [allRescuerData, setAllRescuerData] = useState<Rescuer[]>([]);
+  const [currentRescuerData, setCurrentRescuerData] = useState<Rescuer[]>([]);
 
   const getRescuers = async () => {
-    const result = await supabase.from("employees").select(`
-        id,
-        email,
-        first_name,
-        last_name,
-        image_url,
-        address,
-        contact_number,
-        gender,
-        roles:roles(id, role),
-        status,
-        dob
+    console.log("Fetching all rescuers");
+    const { data, error } = await supabase.from("employees_mobile").select(`
+      id,
+      email,
+      first_name,
+      last_name,
+      image_url,
+      address,
+      contact_number,
+      gender,
+      roles (id, role),
+      status,
+      dob
     `);
 
-    const { data, error } = result;
     if (error) {
-      return error;
+      console.error("Error fetching rescuers:", error);
+      return;
     }
-    return setAllRescuerData(data);
+    console.log("Fetched rescuers data:", data);
+    setAllRescuerData(data);
   };
 
-  const signInWithEmailAndPassword = async (props: any, duration?: number) => {
-    const result = await supabase
-      .from("employees_mobile")
-      .select(
-        `
-        id,
-        email,
-        first_name,
-        last_name,
-        image_url,
-        address,
-        contact_number,
-        gender,
-        roles:roles(id, role),
-        status,
-        dob
-      `
-      )
-      .eq("email", props.email);
-    if (result.error) return result;
-    await new Promise((resolve) => setTimeout(resolve, duration));
-    setCurrentRescuerData(result.data);
-    return result;
-  };
-
-  const signUpWithEmailAndPassword = async (props: any, duration?: number) => {
-    const result = await supabase
-      .from("employees_mobile")
-      .insert({
-        first_name: props.first_name,
-        last_name: props.last_name,
-        email: props.email,
-        position: props.position, // Ensure 'position' is still relevant or adjust accordingly
-      })
-      // Removed the redundant select() after insert as it's not needed for this operation
-      .single(); // Use .single() if you're inserting one record and want to return it directly
-    if (result.error) return result;
-    await new Promise((resolve) => setTimeout(resolve, duration));
-    return result;
-  };
-
-  const getRescuer = async (props: any, duration?: number) => {
+  const signInWithEmailAndPassword = async (
+    email: string,
+    password: string
+  ) => {
+    console.log("Signing in with email and password:", email);
     const { data, error } = await supabase
       .from("employees_mobile")
       .select(
@@ -82,24 +66,69 @@ export const useRescuers: any = () => {
         address,
         contact_number,
         gender,
-        roles:roles(id, role),
+        roles (id, role),
         status,
         dob
       `
       )
-      .eq("email", props.email);
-    if (error) return error;
+      .eq("email", email)
+      .eq("password", password); // Assuming password check is done here for simplicity
 
-    await new Promise((resolve) => setTimeout(resolve, duration));
-    return setCurrentRescuerData(data);
+    if (error) {
+      console.error("Error signing in:", error);
+      return;
+    }
+    console.log("Sign in successful, setting current rescuer data");
+    setCurrentRescuerData(data);
+  };
+
+  const signUpWithEmailAndPassword = async (newRescuerData: Rescuer) => {
+    console.log("Signing up with email and password:", newRescuerData.email);
+    const { error } = await supabase
+      .from("employees_mobile")
+      .insert([newRescuerData])
+      .single();
+
+    if (error) {
+      console.error("Error signing up:", error);
+      return;
+    }
+    console.log("Sign up successful");
+  };
+
+  const getRescuer = async (email: string) => {
+    console.log("Fetching rescuer data for:", email);
+    const { data, error } = await supabase
+      .from("employees_mobile")
+      .select(
+        `
+        id,
+        email,
+        first_name,
+        last_name,
+        image_url,
+        address,
+        contact_number,
+        gender,
+        roles (id, role),
+        status,
+        dob
+      `
+      )
+      .eq("email", email);
+
+    if (error) {
+      console.error("Error fetching rescuer:", error);
+      return;
+    }
+
+    console.log("Fetched rescuer data:", data);
+    setCurrentRescuerData(data);
   };
 
   return {
-    // states
     allRescuerData,
     currentRescuerData,
-
-    // methods
     getRescuer,
     getRescuers,
     signInWithEmailAndPassword,

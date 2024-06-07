@@ -37,7 +37,6 @@ const signUpSchema = z.object({
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters" }),
-  repeat_password: z.string().min(8, { message: "Passwords must match" }),
   image_url: z.string().default("something"),
   address: z.string().min(1, { message: "Address is required" }),
   contact_number: z.coerce
@@ -54,45 +53,45 @@ const signUpSchema = z.object({
   status: z.string().default("Available"),
 });
 
-// Correct the useForm hook to use the correct schema name
 export default function RescuerRegister() {
   const router = useRouter();
   const [authSwitch, setAuthSwitch] = useState(false);
   const [isPending, startTransition] = useTransition();
-  const { signUpWithEmailAndPassword } = useRescuers();
-  const form1 = useForm<z.infer<typeof signUpSchema>>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: zodResolver(signUpSchema),
   });
-
-  //debugging zone
-  const { watch } = form1;
-  const watchedValues = watch();
-  useEffect(() => {
-    console.log(watchedValues);
-  }, [watchedValues]);
-  //debugging zone
 
   const { setItem, getItem } = useLocalStorage("value");
   const currentUser = getItem();
   if (currentUser) {
-    redirect("/application");
+    router.push("/application");
   }
+
+  const { signInWithEmailAndPassword, signUpWithEmailAndPassword } =
+    useRescuers();
+  const form1 = useForm<z.infer<typeof signUpSchema>>({
+    resolver: zodResolver(signUpSchema),
+  });
+
   async function onSignUpSubmit(data: z.infer<typeof signUpSchema>) {
     startTransition(async () => {
-      if (data.password !== data.repeat_password) {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Passwords do not match",
-        });
-        return;
-      }
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
       const result = await signUpWithEmailAndPassword(data);
 
-      const { error } = result;
-      if (error?.message) {
+      const rescuerData: Rescuer = {
+        ...data,
+        contact_number: data.contact_number.toString(), // Ensure contact_number is a string
+        roles: [{ id: "role_id", role: "role" }], // Example transformation, adjust based on actual form data
+      };
+
+      const result = await signUpWithEmailAndPassword(rescuerData);
+
+      if (result.error?.message) {
         toast({
           variant: "destructive",
           title: "Error",
@@ -109,7 +108,6 @@ export default function RescuerRegister() {
         description: `Signup Successful!`,
       });
 
-      // After successful signup, reroute to "/auth/login"
       router.push("/auth/login");
     });
   }
@@ -423,28 +421,6 @@ export default function RescuerRegister() {
                           <FormItem>
                             <FormLabel className="text-xs text-white pointer-events-none">
                               Password
-                            </FormLabel>
-                            <FormControl>
-                              <input
-                                type="password"
-                                placeholder="••••••••••"
-                                className="w-full text-sm px-4 h-[45px] rounded-xl bg-lightBorder text-black border border-lightBorder"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    <div className="flex flex-col w-full gap-0 mb-2">
-                      <FormField
-                        control={form1.control}
-                        name="repeat_password"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-xs text-white pointer-events-none">
-                              Repeat Password
                             </FormLabel>
                             <FormControl>
                               <input
