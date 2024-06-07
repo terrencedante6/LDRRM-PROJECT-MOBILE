@@ -30,7 +30,7 @@ export const useRescuers: any = () => {
 
   const signInWithEmailAndPassword = async (props: any, duration?: number) => {
     const result = await supabase
-      .from("employees")
+      .from("employees_mobile")
       .select(
         `
         id,
@@ -55,7 +55,7 @@ export const useRescuers: any = () => {
 
   const signUpWithEmailAndPassword = async (props: any, duration?: number) => {
     const result = await supabase
-      .from("employees")
+      .from("employees_mobile")
       .insert({
         first_name: props.first_name,
         last_name: props.last_name,
@@ -71,7 +71,7 @@ export const useRescuers: any = () => {
 
   const getRescuer = async (props: any, duration?: number) => {
     const { data, error } = await supabase
-      .from("employees")
+      .from("employees_mobile")
       .select(
         `
         id,

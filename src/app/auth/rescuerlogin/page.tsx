@@ -64,6 +64,14 @@ export default function RescuerRegister() {
     resolver: zodResolver(signUpSchema),
   });
 
+  //debugging zone
+  const { watch } = form1;
+  const watchedValues = watch();
+  useEffect(() => {
+    console.log(watchedValues);
+  }, [watchedValues]);
+  //debugging zone
+
   const { setItem, getItem } = useLocalStorage("value");
   const currentUser = getItem();
   if (currentUser) {
