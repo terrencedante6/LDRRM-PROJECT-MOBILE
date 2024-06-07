@@ -175,3 +175,54 @@ export const useEmployees: any = () => {
     updateEmployeeStatus,
   };
 };
+
+// import { createClient } from "@supabase/supabase-js";
+// import { useState } from "react";
+
+// export const useEmployees = () => {
+//   const [allEmployeesData, setAllEmployeesData] = useState<any[]>([]);
+//   const [currentEmployeeData, setCurrentEmployeeData] = useState<any>([]);
+
+//   const supabase = createClient(
+//     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+//     process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!,
+//     {
+//       auth: {
+//         storageKey: "s1",
+//       },
+//     }
+//   );
+
+//   const createEmployee = async (props: any) => {
+//     const { data, error } = await supabase.auth.signUp({
+//       email: props.email,
+//       password: props.password,
+//       options: {
+//         data: {
+//           first_name: props.first_name,
+//           last_name: props.last_name,
+//           image_url: props.image_url,
+//           address: props.address,
+//           contact_number: props.contact_number,
+//           gender: props.gender,
+//           dob: props.dob,
+//           role: props.role,
+//           status: props.status,
+//         },
+//       },
+//     });
+
+//     if (error) {
+//       console.error("Error creating employee:", error.message);
+//       throw error;
+//     }
+
+//     return data;
+//   };
+
+//   return {
+//     allEmployeesData,
+//     currentEmployeeData,
+//     createEmployee,
+//   };
+// };

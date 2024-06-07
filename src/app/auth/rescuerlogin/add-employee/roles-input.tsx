@@ -12,10 +12,10 @@ import { FormControl } from "@/components/ui/form";
 
 export default function SelectDemo({ data }: { data: any }) {
   const rolesData = [
-    { id: 1, role: "Administrator" },
+    // { id: 1, role: "Administrator" },
     { id: 2, role: "Staff" },
     { id: 3, role: "Rescuer" },
-    { id: 4, role: "Residence" },
+    // { id: 4, role: "Residence" },
   ];
 
   return (

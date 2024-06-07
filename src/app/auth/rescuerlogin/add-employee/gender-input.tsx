@@ -13,12 +13,12 @@ export default function SelectDemo({ data }: { data: any }) {
       <SelectTrigger
         id="gender"
         name="gender"
-        className="w-full  border-slate-600/50 rounded-lg "
+        className="w-full border-slate-600/50 rounded-lg"
         {...data}
       >
         <SelectValue
-          className="text-black"
           placeholder={data ? data.value : "Select a Sex"}
+          className="placeholder:text-slate-400" // Tailwind CSS class for styling placeholder text color
         />
       </SelectTrigger>
       <SelectContent className="rounded-lg">

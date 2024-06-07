@@ -20,35 +20,56 @@ import { Toaster } from "@/components/ui/toaster";
 import { toast } from "@/components/ui/use-toast";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
-import { useMobileUsers } from "@/hooks/useMobileUsers";
+import { useRescuers } from "@/hooks/useRescuerMobile";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import Image from "next/image";
 import amlanldrrmlogo from "@/images/amlanldrrmlogo.png";
 
-const signUpScheema = z.object({
+import DobInput from "./add-employee/dob-input";
+import RoleInput from "./add-employee/roles-input";
+import GenderInput from "./add-employee/gender-input";
+
+// Assuming your schema is defined as signUpSchema
+const signUpSchema = z.object({
+  first_name: z.string().min(1, { message: "First name is required" }),
+  last_name: z.string().min(1, { message: "Last name is required" }),
   email: z.string().email({ message: "Must be a valid email" }),
-  first_name: z
-    .string()
-    .min(2, { message: "First name must be at least 2 characters" }),
-  last_name: z
-    .string()
-    .min(2, { message: "Last name must be at least 2 characters" }),
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters" }),
   repeat_password: z.string().min(8, { message: "Passwords must match" }),
+  image_url: z.string().default("something"),
+  address: z.string().min(1, { message: "Address is required" }),
+  contact_number: z.coerce
+    .number()
+    .min(1, { message: "Contact number is required" }),
+  gender: z.string().default("Male"),
+  dob: z
+    .date()
+    .min(new Date(1900, 1, 1), { message: "Date of birth is required" }),
+  role: z
+    .string()
+    .min(1, { message: "Role is required" })
+    .transform((arg) => Number(arg)),
+  status: z.string().default("Available"),
 });
-export default function RescuerLogin() {
+
+// Correct the useForm hook to use the correct schema name
+export default function RescuerRegister() {
   const router = useRouter();
   const [authSwitch, setAuthSwitch] = useState(false);
   const [isPending, startTransition] = useTransition();
-  const { signInWithEmailAndPassword, signUpWithEmailAndPassword } =
-    useMobileUsers();
-  const form1 = useForm<z.infer<typeof signUpScheema>>({
-    resolver: zodResolver(signUpScheema),
+  const { signUpWithEmailAndPassword } = useRescuers();
+  const form1 = useForm<z.infer<typeof signUpSchema>>({
+    resolver: zodResolver(signUpSchema),
   });
 
-  async function onSignUpSubmit(data: z.infer<typeof signUpScheema>) {
+  const { setItem, getItem } = useLocalStorage("value");
+  const currentUser = getItem();
+  if (currentUser) {
+    redirect("/application");
+  }
+  async function onSignUpSubmit(data: z.infer<typeof signUpSchema>) {
     startTransition(async () => {
       if (data.password !== data.repeat_password) {
         toast({
@@ -76,37 +97,14 @@ export default function RescuerLogin() {
         className: cn(
           "top-0 left-0 right-0 mx-auto max-w-[350px] rounded-2xl py-3 px-7 flex fixed top-3 md:top-4 bg-blue-600 text-white shadow-xl border-transparent font-medium"
         ),
-        title: "✅ Sucess",
+        title: "✅ Success",
         description: `Signup Successful!`,
       });
 
+      // After successful signup, reroute to "/auth/login"
       router.push("/auth/login");
-
-      return setAuthSwitch(!authSwitch);
     });
   }
-
-  //debuggin zone
-
-  // const axios = require('axios');
-
-  // async function sendVerificationCode(phoneNumber, code) {
-  //   const response = await axios.post('https://api.infobip.com/sms/1/text/single', {
-  //     from: 'YourAppName',
-  //     to: phoneNumber,
-  //     text: `Your verification code is ${code}`
-  //   }, {
-  //     headers: {
-  //       'Authorization': 'Basic ' + Buffer.from('yourInfobipUsername:yourInfobipPassword').toString('base64'),
-  //       'Content-Type': 'application/json',
-  //       'Accept': 'application/json'
-  //     }
-  //   });
-
-  //   return response.data;
-  // }
-
-  //debuggin zone
 
   return (
     <div className="w-full min-h-screen flex flex-col">
@@ -138,34 +136,136 @@ export default function RescuerLogin() {
         </motion.div>
 
         <AnimatePresence>
+          {/* {authSwitch && (
+          <motion.div
+            key="login"
+            initial={{ opacity: 0, y: 300 }}
+            animate={{ opacity: 1, y: 30 }}
+            exit={{ opacity: 0, y: 300 }}
+            transition={{ duration: 0.3, delay: 0.5 }}
+            className="w-full h-[80%] rounded-t-[20px] p-8 flex flex-col gap-6 absolute bottom-0 z-50 overflow-hidden "
+            style={{ backgroundColor: "rgb(31,31,31)" }}
+          >
+            <div className="w-full flex flex-col ">
+              <h1 className="w-full text-white text-2xl font-bold">
+                Welcome Back!
+              </h1>
+              <span className="text-white text-sm">Login to continue</span>
+            </div>
+            <div
+              className="w-full flex flex-col justify-center place-items-center h-fit gap-11 z-50"
+              style={{ backgroundColor: "rgb(31,31,31)" }}
+            >
+              <Form {...form1}>
+                <form
+                  className="flex flex-col w-full gap-4"
+                  onSubmit={form1.handleSubmit(onSignUpSubmit)}
+                >
+                  <div className="flex flex-col w-full gap-2">
+                    <div className="flex flex-col w-full gap-3">
+                      <FormField
+                        control={form1.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-xs text-white pointer-events-none">
+                              Email
+                            </FormLabel>
+                            <FormControl>
+                              <input
+                                title="email"
+                                type="text"
+                                placeholder="Enter your email"
+                                className="w-full text-sm px-5 py-2.5 h-[50px] rounded-xl bg-lightBorder text-black border border-lightBorder "
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="flex flex-col w-full gap-3">
+                      <FormField
+                        control={form1.control}
+                        name="password"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-xs text-white pointer-events-none">
+                              Password
+                            </FormLabel>
+                            <FormControl>
+                              <input
+                                type="password"
+                                placeholder="••••••••••"
+                                className="w-full text-sm px-5 py-2.5 h-[50px] rounded-xl bg-lightBorder text-black border border-lightBorder "
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+
+                  <Button
+                    type="submit"
+                    className="w-full flex gap-4 text-white text-lg px-5 py-2.5 h-[50px] text-center rounded-xl  bg-blue-500/75 hover:bg-applicationPrimary transform active:scale-95 transition-transform duration-300 "
+                  >
+                    <span
+                      className={cn("pointer-events-none", {
+                        hidden: isPending,
+                      })}
+                    >
+                      Login
+                    </span>
+                    <AiOutlineLoading3Quarters
+                      className={cn("pointer-events-none animate-spin", {
+                        hidden: !isPending,
+                      })}
+                    />
+                  </Button>
+                </form>
+              </Form>
+            </div>
+            <motion.div className="w-full flex justify-center">
+              <span className="w-full text-center text-white">
+                Dont have an account?{" "}
+                <span
+                  onClick={() => setAuthSwitch(!authSwitch)}
+                  className="text-applicationPrimary font-bold hover:underline"
+                >
+                  SignUp
+                </span>
+              </span>
+            </motion.div>
+          </motion.div>
+        )} */}
           {!authSwitch && (
             <motion.div
               key="signup"
               initial={{ opacity: 0, y: 300 }}
               animate={{ opacity: 1, y: 30 }}
               exit={{ opacity: 0, y: 300 }}
-              transition={{ duration: 0.2, delay: 0.5 }}
-              className="w-full h-[80%] rounded-t-[20px] p-8 flex flex-col gap-2 absolute bottom-0 z-50 overflow-hidden "
+              transition={{ duration: 3, delay: 0.5 }}
+              className="w-full h-[100%] rounded-t-[20px] p-8 flex flex-col gap-2 absolute bottom-0 z-50 overflow-hidden "
               style={{ backgroundColor: "rgb(31,31,31)" }}
             >
-              <div className="w-full flex flex-col gap-3">
-                <h1 className="w-full text-white text-3xl font-bold items-center text-center ">
-                  LDRRMO AMLAN
+              <div className="w-full flex flex-col justify-center place-items-center text-center">
+                <h1 className="w-full text-white text-2xl font-bold">
+                  LDRRMO AMLAN APP
                 </h1>
-                <h2 className="w-full text-white text-xl font-bold items-center text-center">
-                  Employee portal
-                </h2>
+                <span className="text-green-600 text-sm italic pt-2">
+                  "We Risk Ourselves To Save Lives"
+                </span>
               </div>
-              <span className="w-full text-green-600 text-lg font-bold items-center text-center italic pt-6">
-                "We Risk Ourselves To Save Lives"
-              </span>
               <div className="w-full flex flex-col justify-center place-items-center h-fit gap-11 z-40">
                 <Form {...form1}>
                   <form
                     className="flex flex-col w-full gap-2"
                     onSubmit={form1.handleSubmit(onSignUpSubmit)}
                   >
-                    {/* <span>First/Last Name</span> */}
                     <div className="w-full flex justify-between gap-3">
                       <div className="flex flex-col w-full gap-3">
                         <FormField
@@ -214,102 +314,174 @@ export default function RescuerLogin() {
                         />
                       </div>
                     </div>
-                    {/* <span>Email/Password/Repeat Password</span> */}
-                    <div className="flex flex-col w-full gap-1">
-                      <div className="flex flex-col w-full gap-3">
-                        <FormField
-                          control={form1.control}
-                          name="email"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-xs text-white pointer-events-none">
-                                Email
-                              </FormLabel>
-                              <FormControl>
-                                <input
-                                  title="email"
-                                  type="text"
-                                  placeholder="Enter your email"
-                                  className="w-full text-sm px-4 h-[45px] rounded-xl bg-lightBorder text-black border border-lightBorder"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-
-                      <div className="flex flex-col w-full gap-3">
-                        <FormField
-                          control={form1.control}
-                          name="password"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-xs text-white pointer-events-none">
-                                Password
-                              </FormLabel>
-                              <FormControl>
-                                <input
-                                  type="password"
-                                  placeholder="••••••••••"
-                                  className="w-full text-sm px-4 h-[45px] rounded-xl bg-lightBorder text-black border border-lightBorder"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                      <div className="flex flex-col w-full gap-0">
-                        <FormField
-                          control={form1.control}
-                          name="repeat_password"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-xs text-white pointer-events-none">
-                                Repeat Password
-                              </FormLabel>
-                              <FormControl>
-                                <input
-                                  type="password"
-                                  placeholder="••••••••••"
-                                  className="w-full text-sm px-4 h-[45px] rounded-xl bg-lightBorder text-black border border-lightBorder"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
+                    <div className="flex flex-col w-full gap-3">
+                      <FormField
+                        control={form1.control}
+                        name="address"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-xs text-white pointer-events-none">
+                              Address
+                            </FormLabel>
+                            <FormControl>
+                              <input
+                                title="address"
+                                type="text"
+                                placeholder="Address"
+                                className="w-full text-sm px-4 h-[45px] rounded-xl bg-lightBorder text-black border border-lightBorder"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                     </div>
-
-                    {/* <span>button area</span> */}
-                    <div className="w-full flex text-center justify-center mt-2">
-                      <Button
-                        type="submit"
-                        className="text-xl w-[40%] h-[110%] rounded-xl text-center transform active:scale-90 transition-transform"
+                    <div className="flex flex-col w-full gap-3">
+                      <FormField
+                        control={form1.control}
+                        name="contact_number"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-xs text-white pointer-events-none">
+                              Contact Number
+                            </FormLabel>
+                            <FormControl>
+                              <input
+                                title="contact_number"
+                                type="number"
+                                placeholder="Contact Number"
+                                className="w-full text-sm px-4 h-[45px] rounded-xl bg-lightBorder text-black border border-lightBorder"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="flex flex-col w-full gap-3">
+                      <FormField
+                        control={form1.control}
+                        name="gender"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-xs text-white pointer-events-none">
+                              Sex
+                            </FormLabel>
+                            <FormControl>
+                              <GenderInput data={field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form1.control}
+                        name="role"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-xs text-white pointer-events-none">
+                              Role
+                            </FormLabel>
+                            <RoleInput data={field} />
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="flex flex-col w-full gap-3">
+                      <FormField
+                        control={form1.control}
+                        name="dob"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-xs text-white pointer-events-none">
+                              Date Of Birth
+                            </FormLabel>
+                            <FormControl>
+                              <DobInput data={field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="flex flex-col w-full gap-3">
+                      <FormField
+                        control={form1.control}
+                        name="password"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-xs text-white pointer-events-none">
+                              Password
+                            </FormLabel>
+                            <FormControl>
+                              <input
+                                type="password"
+                                placeholder="••••••••••"
+                                className="w-full text-sm px-4 h-[45px] rounded-xl bg-lightBorder text-black border border-lightBorder"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="flex flex-col w-full gap-0 mb-2">
+                      <FormField
+                        control={form1.control}
+                        name="repeat_password"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-xs text-white pointer-events-none">
+                              Repeat Password
+                            </FormLabel>
+                            <FormControl>
+                              <input
+                                type="password"
+                                placeholder="••••••••••"
+                                className="w-full text-sm px-4 h-[45px] rounded-xl bg-lightBorder text-black border border-lightBorder"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <Button
+                      type="submit"
+                      className="w-full flex gap-0 text-white text-sm  text-center hover:bg-applicationPrimary/70 font-bold rounded-xl transition-all duration-300 "
+                    >
+                      <span
+                        className={cn("pointer-events-none", {
+                          hidden: isPending,
+                        })}
                       >
-                        <span
-                          className={cn("pointer-events-none", {
-                            hidden: isPending,
-                          })}
-                        >
-                          Sign Up
-                        </span>
-                        <AiOutlineLoading3Quarters
-                          className={cn("pointer-events-none animate-spin", {
-                            hidden: !isPending,
-                          })}
-                        />
-                      </Button>
-                    </div>
-                    {/* <span>button area</span> */}
+                        Signup
+                      </span>
+                      <AiOutlineLoading3Quarters
+                        className={cn("pointer-events-none animate-spin", {
+                          hidden: !isPending,
+                        })}
+                      />
+                    </Button>
                   </form>
                 </Form>
               </div>
+              {/* <motion.div className="w-full flex justify-center">
+                <span className="w-full text-center text-white">
+                  Already have an account?{" "}
+                  <span
+                    onClick={() => setAuthSwitch(!authSwitch)}
+                    className="text-applicationPrimary font-bold hover:underline"
+                  >
+                    Login
+                  </span>
+                </span>
+              </motion.div> */}
             </motion.div>
           )}
         </AnimatePresence>
