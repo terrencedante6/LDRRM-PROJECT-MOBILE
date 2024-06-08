@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 type RequestProps = {
   requester_first_name: string | null;
@@ -10,15 +10,19 @@ type RequestProps = {
   calamity_type: string;
 };
 
-export const useRequests: any = () => {
+export const useRequests = () => {
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
   );
-  const [requestsData, setRequestsData] = useState<any>([]);
-  const [currentRequestData, setCurrentRequestData] = useState<any>([]);
+  const [requestsData, setRequestsData] = useState<any[]>([]);
+  const [currentRequestData, setCurrentRequestData] = useState<any>(null);
 
-  const createRequest = async (props: RequestProps, duration?: any) => {
+  useEffect(() => {
+    console.log("useRequests hook initialized");
+  }, []);
+
+  const createRequest = async (props: RequestProps, duration: number = 0) => {
     console.log("Inserting request:", props);
 
     try {
@@ -41,6 +45,7 @@ export const useRequests: any = () => {
       }
 
       await new Promise((resolve) => setTimeout(resolve, duration));
+      console.log("Request creation delay completed");
 
       return result;
     } catch (error) {
@@ -48,14 +53,15 @@ export const useRequests: any = () => {
     }
   };
 
-  const getRequests = async (props?: any) => {
+  const getRequests = async () => {
+    console.log("Fetching requests");
     const result = await supabase
       .from("requests")
       .select(
         "*, employees(*, roles(*)), use_foodsupplies(*), use_equipments(*), use_vehicles(*)"
       )
       .order("created_at", { ascending: false });
-    console.log(result);
+    console.log("Fetch result:", result);
 
     if (result.error) {
       console.error("Error fetching requests:", result.error);
@@ -63,6 +69,7 @@ export const useRequests: any = () => {
     }
     const { data } = result;
     setRequestsData(data);
+    console.log("Requests data updated");
   };
 
   return {
@@ -72,6 +79,6 @@ export const useRequests: any = () => {
 
     // methods
     createRequest,
-    getRequests, // add this line
+    getRequests,
   };
 };

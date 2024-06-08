@@ -35,6 +35,7 @@ export default function Requests() {
 
   useEffect(() => {
     if (!error) {
+      console.log("Current User ID for subscription:", currentUser.id); // Debugging line
       const supabase = createSupabaseBrowserClient();
       const subscribedChannel = supabase
         .channel(`service-mobile-orders-follow-up-${currentUser.id}`)
@@ -55,7 +56,7 @@ export default function Requests() {
         supabase.removeChannel(subscribedChannel);
       };
     }
-  }, []);
+  }, [error, currentUser.id]); // Added currentUser.id as a dependency
 
   return (
     <div className="flex flex-col gap-4 w-full place-items-center justify-start px-4 relative">
