@@ -61,6 +61,7 @@ export const useMobileUsers: any = () => {
         last_name: props.last_name,
         email: props.email,
         password: props.password,
+        contact_number: props.contact_number,
       })
       .select();
     if (result.error) return result;

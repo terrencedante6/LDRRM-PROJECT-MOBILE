@@ -24,6 +24,7 @@ import { useMobileUsers } from "@/hooks/useMobileUsers";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import Image from "next/image";
 import amlanldrrmlogo from "@/images/amlanldrrmlogo.png";
+import { Contact } from "lucide-react";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Must be a valid email" }),
@@ -40,6 +41,7 @@ const signUpScheema = z.object({
   last_name: z
     .string()
     .min(2, { message: "Last name must be at least 2 characters" }),
+  contact_number: z.string(),
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters" }),
@@ -308,29 +310,6 @@ export default function Login() {
                     onSubmit={form2.handleSubmit(onSignUpSubmit)}
                   >
                     <div className="flex flex-col w-full gap-1">
-                      <div className="flex flex-col w-full gap-3">
-                        <FormField
-                          control={form2.control}
-                          name="email"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-xs text-white pointer-events-none">
-                                Email
-                              </FormLabel>
-                              <FormControl>
-                                <input
-                                  title="email"
-                                  type="text"
-                                  placeholder="Enter your email"
-                                  className="w-full text-sm px-4 h-[45px] rounded-xl bg-lightBorder text-black border border-lightBorder"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
                       <div className="w-full flex justify-between gap-3">
                         <div className="flex flex-col w-full gap-3">
                           <FormField
@@ -378,6 +357,52 @@ export default function Login() {
                             )}
                           />
                         </div>
+                      </div>
+                      <div className="flex flex-col w-full gap-3">
+                        <FormField
+                          control={form2.control}
+                          name="contact_number"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-xs text-white pointer-events-none">
+                                Contact Number
+                              </FormLabel>
+                              <FormControl>
+                                <input
+                                  title="contact_number"
+                                  type="text"
+                                  placeholder="Enter your contact number"
+                                  className="w-full text-sm px-4 h-[45px] rounded-xl bg-lightBorder text-black border border-lightBorder"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="flex flex-col w-full gap-3">
+                        <FormField
+                          control={form2.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-xs text-white pointer-events-none">
+                                Email
+                              </FormLabel>
+                              <FormControl>
+                                <input
+                                  title="email"
+                                  type="text"
+                                  placeholder="Enter your email"
+                                  className="w-full text-sm px-4 h-[45px] rounded-xl bg-lightBorder text-black border border-lightBorder"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
                       </div>
                       <div className="flex flex-col w-full gap-3">
                         <FormField

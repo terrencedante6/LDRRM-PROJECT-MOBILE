@@ -45,93 +45,92 @@ export const useRescuers = () => {
       console.error("Error fetching rescuers:", error);
       return;
     }
-    console.log("Fetched rescuers data:", data);
+
     setAllRescuerData(data);
-  };
-
-  const signInWithEmailAndPassword = async (
-    email: string,
-    password: string
-  ) => {
-    console.log("Signing in with email and password:", email);
-    const { data, error } = await supabase
-      .from("employees_mobile")
-      .select(
-        `
-        id,
-        email,
-        first_name,
-        last_name,
-        image_url,
-        address,
-        contact_number,
-        gender,
-        roles (id, role),
-        status,
-        dob
-      `
-      )
-      .eq("email", email)
-      .eq("password", password); // Assuming password check is done here for simplicity
-
-    if (error) {
-      console.error("Error signing in:", error);
-      return;
-    }
-    console.log("Sign in successful, setting current rescuer data");
     setCurrentRescuerData(data);
   };
 
-  const signUpWithEmailAndPassword = async (newRescuerData: Rescuer) => {
-    console.log("Signing up with email and password:", newRescuerData.email);
-    const { error } = await supabase
-      .from("employees_mobile")
-      .insert([newRescuerData])
+  const signUpRescuer = async (rescuer: {
+    email: string;
+    first_name: string;
+    last_name: string;
+    password: string; // Ensure you handle password securely
+    address: string;
+    contact_number: string;
+    gender: string;
+    role: string; // Assuming role is a string to be matched in roles table
+    dob: Date;
+  }) => {
+    // Assuming role needs to be resolved to an ID from roles table
+    const { data: rolesData, error: rolesError } = await supabase
+      .from("roles")
+      .select("id")
+      .eq("role", rescuer.role)
       .single();
 
-    if (error) {
-      console.error("Error signing up:", error);
+    if (rolesError || !rolesData) {
+      console.error("Role not found or error fetching role:", rolesError);
       return;
     }
-    console.log("Sign up successful");
+
+    const { data, error } = await supabase.from("employees_mobile").insert([
+      {
+        email: rescuer.email,
+        first_name: rescuer.first_name,
+        last_name: rescuer.last_name,
+        password: rescuer.password, // Ensure you hash the password before storing
+        address: rescuer.address,
+        contact_number: rescuer.contact_number,
+        gender: rescuer.gender,
+        roles: [{ id: rolesData.id }],
+        dob: rescuer.dob,
+        status: "active", // Assuming default status
+      },
+    ]);
+
+    if (error) {
+      console.error("Error creating rescuer account:", error);
+      return;
+    }
+
+    // Optionally update state or do something with the result here
+    console.log("Rescuer account created successfully:", data);
   };
 
-  const getRescuer = async (email: string) => {
-    console.log("Fetching rescuer data for:", email);
-    const { data, error } = await supabase
+  const signInRescuerWithEmailAndPassword = async (
+    props: any,
+    duration?: number
+  ) => {
+    const result = await supabase
       .from("employees_mobile")
       .select(
         `
         id,
-        email,
         first_name,
         last_name,
+        email,
+        password,
         image_url,
-        address,
-        contact_number,
+        dob,
         gender,
-        roles (id, role),
-        status,
-        dob
+        address,
+        contact_number,    
+        created_at
       `
       )
-      .eq("email", email);
-
-    if (error) {
-      console.error("Error fetching rescuer:", error);
-      return;
-    }
-
-    console.log("Fetched rescuer data:", data);
-    setCurrentRescuerData(data);
+      .eq("email", props.email);
+    if (result.error) return result;
+    await new Promise((resolve) => setTimeout(resolve, duration));
+    // setCurrentRescuerData(result.data); // Assuming you have a similar function for rescuers
+    return result;
   };
 
   return {
     allRescuerData,
     currentRescuerData,
-    getRescuer,
+    signInRescuerWithEmailAndPassword,
+
     getRescuers,
-    signInWithEmailAndPassword,
-    signUpWithEmailAndPassword,
+    signUpRescuer,
   };
 };
