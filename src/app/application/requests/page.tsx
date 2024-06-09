@@ -28,7 +28,7 @@ export default function Requests() {
   useEffect(() => {
     const initialFetch = async () => {
       const result = await getRequests();
-      if (result) setError(result);
+      // if (result) setError(result);
     };
     initialFetch();
   }, []);
@@ -73,7 +73,7 @@ export default function Requests() {
             filter: `mobile_user_id=eq.${currentUser.id}`,
           },
           (payload: any) => {
-            getRequests(currentUser);
+            // getRequests(currentUser);
           }
         )
         .subscribe();
