@@ -27,11 +27,36 @@ export default function Requests() {
 
   useEffect(() => {
     const initialFetch = async () => {
-      const result = await getRequests(currentUser);
+      const result = await getRequests();
       if (result) setError(result);
     };
     initialFetch();
   }, []);
+
+  useEffect(() => {
+    if (error === false) {
+      console.log("Current User ID for subscription:", currentUser.id); // Debugging line
+      const supabase = createSupabaseBrowserClient();
+      const subscribedChannel = supabase
+        .channel(`service-mobile-orders-follow-up-${currentUser.id}`)
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "requests",
+            filter: `mobile_user_id=eq.${currentUser.id}`,
+          },
+          () => {
+            getRequests();
+          }
+        )
+        .subscribe();
+      return () => {
+        supabase.removeChannel(subscribedChannel);
+      };
+    }
+  }, [error, currentUser.id]);
 
   useEffect(() => {
     if (!error) {
