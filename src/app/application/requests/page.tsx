@@ -25,16 +25,16 @@ export default function Requests() {
   const [error, setError] = useState(false);
   const { getRequests, requestsData } = useRequests();
 
-  useEffect(() => {
-    const initialFetch = async () => {
-      const result = await getRequests();
-      // Assuming getRequests now returns null when there's no error
-      if (result !== null) {
-        setError(true); // Set error state to true or set the error message if you prefer
-      }
-    };
-    initialFetch();
-  }, []);
+  // useEffect(() => {
+  //   const initialFetch = async () => {
+  //     const result = await getRequests();
+  //     // Assuming getRequests now returns null when there's no error
+  //     if (result !== null) {
+  //       setError(true); // Set error state to true or set the error message if you prefer
+  //     }
+  //   };
+  //   initialFetch();
+  // }, []);
 
   useEffect(() => {
     if (error === false) {
