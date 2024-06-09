@@ -61,30 +61,30 @@ export default function Requests() {
     }
   }, [error, currentUser.id]);
 
-  useEffect(() => {
-    if (!error) {
-      console.log("Current User ID for subscription:", currentUser.id); // Debugging line
-      const supabase = createSupabaseBrowserClient();
-      const subscribedChannel = supabase
-        .channel(`service-mobile-orders-follow-up-${currentUser.id}`)
-        .on(
-          "postgres_changes",
-          {
-            event: "*",
-            schema: "public",
-            table: "requests",
-            filter: `mobile_user_id=eq.${currentUser.id}`,
-          },
-          (payload: any) => {
-            getRequests(currentUser);
-          }
-        )
-        .subscribe();
-      return () => {
-        supabase.removeChannel(subscribedChannel);
-      };
-    }
-  }, [error, currentUser.id]); // Added currentUser.id as a dependency
+  // useEffect(() => {
+  //   if (!error) {
+  //     console.log("Current User ID for subscription:", currentUser.id); // Debugging line
+  //     const supabase = createSupabaseBrowserClient();
+  //     const subscribedChannel = supabase
+  //       .channel(`service-mobile-orders-follow-up-${currentUser.id}`)
+  //       .on(
+  //         "postgres_changes",
+  //         {
+  //           event: "*",
+  //           schema: "public",
+  //           table: "requests",
+  //           filter: `mobile_user_id=eq.${currentUser.id}`,
+  //         },
+  //         (payload: any) => {
+  //           getRequests(currentUser);
+  //         }
+  //       )
+  //       .subscribe();
+  //     return () => {
+  //       supabase.removeChannel(subscribedChannel);
+  //     };
+  //   }
+  // }, [error, currentUser.id]); // Added currentUser.id as a dependency
 
   return (
     <div className="flex flex-col gap-4 w-full place-items-center justify-start px-4 relative">
