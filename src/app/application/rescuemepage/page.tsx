@@ -37,34 +37,34 @@ export default function Requests() {
   //   }
   // }, []);
 
-  useEffect(() => {
-    const fetchRequests = async () => {
-      const requests = await getRequests(currentUser);
-      if (requests && requests.length > 0) {
-        const supabase = createSupabaseBrowserClient();
-        const subscribedChannel = supabase
-          .channel(`service-mobile-orders-follow-up-${currentUser.id}`)
-          .on(
-            "postgres_changes",
-            {
-              event: "*",
-              schema: "public",
-              table: "requests",
-              filter: `mobile_user_id=eq.${currentUser.id}`,
-            },
-            (payload: any) => {
-              getRequests(currentUser);
-            }
-          )
-          .subscribe();
-        return () => {
-          supabase.removeChannel(subscribedChannel);
-        };
-      }
-    };
+  // useEffect(() => {
+  //   const fetchRequests = async () => {
+  //     const requests = await getRequests(currentUser);
+  //     if (requests && requests.length > 0) {
+  //       const supabase = createSupabaseBrowserClient();
+  //       const subscribedChannel = supabase
+  //         .channel(`service-mobile-orders-follow-up-${currentUser.id}`)
+  //         .on(
+  //           "postgres_changes",
+  //           {
+  //             event: "*",
+  //             schema: "public",
+  //             table: "requests",
+  //             filter: `mobile_user_id=eq.${currentUser.id}`,
+  //           },
+  //           (payload: any) => {
+  //             getRequests(currentUser);
+  //           }
+  //         )
+  //         .subscribe();
+  //       return () => {
+  //         supabase.removeChannel(subscribedChannel);
+  //       };
+  //     }
+  //   };
 
-    fetchRequests();
-  }, [getRequests, currentUser]);
+  //   fetchRequests();
+  // }, [getRequests, currentUser]);
 
   return (
     <div className="flex flex-col gap-4 w-full place-items-center justify-start px-4 relative">
@@ -78,7 +78,7 @@ export default function Requests() {
         </div>
 
         <div>
-          <RequestForm requestData={requestsData} />
+          <RequestForm data={requestsData} />
         </div>
 
         <div className="flex flex-col gap-2 m-1">
