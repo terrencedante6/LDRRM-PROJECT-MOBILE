@@ -22,11 +22,7 @@ export default function RequestsContent({ request }: any) {
     <div className="w-full flex flex-col gap-6 justify-between rounded-2xl pb-14">
       {request.map((request: any) => {
         return (
-          <div
-            className="w-full h-fit bg-slate-700/20 rounded-2xl p-4 shadow-xl flex flex-col gap-2 active:scale-95 transition-all duration-300"
-            // onClick={() => router.push(`/application/requests/${request.id}`)}
-            // key={request.id}
-          >
+          <div className="w-full h-fit bg-slate-700/20 rounded-2xl p-4 shadow-xl flex flex-col gap-2 active:scale-95 transition-all duration-300">
             <div className="w-full flex flex-col">
               <div className="w-full flex justify-between place-items-center">
                 <h3 className="w-full text-sm font-bold text-slate-200 ">
