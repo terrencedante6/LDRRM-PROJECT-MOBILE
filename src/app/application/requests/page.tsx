@@ -28,7 +28,10 @@ export default function Requests() {
   useEffect(() => {
     const initialFetch = async () => {
       const result = await getRequests();
-      if (result) setError(result);
+      // Assuming getRequests now returns null when there's no error
+      if (result !== null) {
+        setError(true); // Set error state to true or set the error message if you prefer
+      }
     };
     initialFetch();
   }, []);
