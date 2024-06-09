@@ -26,16 +26,16 @@ export default function Requests() {
   const [error, setError] = useState(false);
   const { getRequests, requestsData } = useRequests();
 
-  useEffect(() => {
-    const initialFetch = async () => {
-      const result = getRequests(currentUser);
-      if (result) setError(result);
-    };
-    initialFetch();
-    if (!currentUser) {
-      redirect("/auth/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const initialFetch = async () => {
+  //     const result = getRequests(currentUser);
+  //     if (result) setError(result);
+  //   };
+  //   initialFetch();
+  //   if (!currentUser) {
+  //     redirect("/auth/login");
+  //   }
+  // }, []);
 
   useEffect(() => {
     const fetchRequests = async () => {
