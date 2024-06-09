@@ -18,37 +18,13 @@ import { useRequests } from "@/hooks/useOrders";
 export const viewport: Viewport = {
   themeColor: "#fff",
 };
+
 export default function Requests() {
   const { getItem } = useLocalStorage("value");
   const currentUser = getItem();
 
   const [error, setError] = useState(false);
-  const [currentRequestData, setCurrentRequestData] =
-    useState<RequestData>(null);
-  type RequestData = {
-    // existing fields
-  } | null;
   const { getRequests, requestsData } = useRequests();
-
-  const fetchRequestData = async () => {
-    const response = await fetch("/api/requestData"); // Adjust the API endpoint as necessary
-    const data = await response.json();
-
-    // Ensure the data includes all required properties
-    const currentRequestData = {
-      requester_first_name: data.requester_first_name || "DefaultFirstName",
-      requester_last_name: data.requester_last_name || "DefaultLastName",
-      requester_contact_number:
-        data.requester_contact_number || "DefaultContactNumber",
-      coordinates: data.coordinates || "DefaultCoordinates",
-      // Add default values or transformations for the two additional unspecified properties
-      additionalProperty1: data.additionalProperty1 || "DefaultValue1",
-      additionalProperty2: data.additionalProperty2 || "DefaultValue2",
-      // Include any other properties as needed
-    };
-
-    return currentRequestData;
-  };
 
   // useEffect(() => {
   //   const initialFetch = async () => {
@@ -88,7 +64,6 @@ export default function Requests() {
   //   };
 
   //   fetchRequests();
-
   // }, [getRequests, currentUser]);
 
   return (
@@ -101,10 +76,9 @@ export default function Requests() {
             </h1>
           </div>
         </div>
+
         <div>
-          {currentRequestData && (
-            <RequestForm requestData={currentRequestData} />
-          )}
+          <RequestForm data={requestsData} />
         </div>
 
         <div className="flex flex-col gap-2 m-1">
