@@ -27,6 +27,15 @@ import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { Button } from "antd";
 import { Link } from "lucide-react";
 
+const currentRequestData: RequestData = {
+  requester_first_name: null,
+  requester_last_name: null,
+  requester_contact_number: null,
+  coordinates: "",
+  mobile_user_id: "",
+  calamity_type: "",
+};
+
 const RequestSchema = z.object({
   requester_first_name: z.string().nullable(),
   requester_last_name: z.string().nullable(),
@@ -40,6 +49,7 @@ interface RequestData {
   requester_last_name: string | null;
   requester_contact_number: string | null;
   coordinates: string;
+  mobile_user_id: string; // Add the mobile_user_id property
   calamity_type: string;
 }
 
@@ -88,14 +98,14 @@ export default function RequestForm({ requestData }: RequestFormProps) {
     console.log(data);
     const result = await createRequest(data);
 
-    if (result?.error) {
-      toast({
-        variant: "destructive",
-        title: "Error napud",
-        description: result.error.message,
-      });
-      return;
-    }
+    // if (result?.error) {
+    //   toast({
+    //     variant: "destructive",
+    //     title: "Error napud",
+    //     description: result.error.message,
+    //   });
+    //   return;
+    // }
 
     toast({
       className:
